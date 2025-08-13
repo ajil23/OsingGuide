@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\GuideProfile;
 
 class User extends Authenticatable
 {
@@ -21,7 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
+        'role',
+        'phone'
     ];
 
     /**
@@ -42,4 +44,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function reviewsReceived()
+    {
+        return $this->hasMany(Review::class, 'guide_id');
+    }   
+
+    public function guideProfile()
+    {
+        return $this->hasOne(GuideProfile::class, 'user_id');
+    }
+
+    public function bookingsAsGuide()
+    {
+        return $this->hasMany(Booking::class, 'guide_id');
+    }
+
+    public function bookingsAsCustomer()
+    {
+        return $this->hasMany(Booking::class, 'customer_id');
+    }
 }

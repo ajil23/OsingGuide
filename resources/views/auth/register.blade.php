@@ -63,6 +63,15 @@
                   @enderror
                 </div>
 
+                {{-- Phone --}}
+                <div class="mb-3">
+                  <input type="text" name="phone" value="{{ old('phone') }}"
+                    class="form-control @error('phone') is-invalid @enderror" placeholder="Phone" required>
+                  @error('phone')
+                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
+                  @enderror
+                </div>
+
                 {{-- Password --}}
                 <div class="mb-3">
                   <input type="password" name="password"
