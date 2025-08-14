@@ -4,7 +4,7 @@
     @include('layouts.header')
     <div class="container-fluid py-4">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-12">
                 <div class="card">
                     <div class="card-body">
                         <h5>Beri Ulasan untuk {{ $booking->guide->name }}</h5>

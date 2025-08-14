@@ -28,7 +28,7 @@
                                     <tr>
                                         <td>{{ $booking->guide->name }}</td>
                                         <td>
-                                            {{ $booking->start_time->format('d M') }} - {{ $booking->end_time->format('d M') }}
+                                            {{ $booking->start_time->format('d M Y H:i') }} - {{ $booking->end_time->format('d M Y H:i') }}
                                         </td>
                                         <td>{{ $booking->total_days }} hari</td>
                                         <td>

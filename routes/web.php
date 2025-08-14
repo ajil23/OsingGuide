@@ -68,5 +68,34 @@ Route::prefix('customer')->name('customer.')->middleware('role:customer')->group
     Route::post('/reviews', [ReviewController::class, 'store'])->name('review.store');
 });
 
+Route::get('/test-telegram', function () {
+    $token = env('TELEGRAM_BOT_TOKEN');
+    $chatId = env('TELEGRAM_CHAT_ID');
+
+    $message = "Test kirim pesan dari Laravel 🚀";
+
+    $data = [
+        'chat_id' => $chatId,
+        'text' => $message,
+        'parse_mode' => 'HTML'
+    ];
+
+    $url = "https://api.telegram.org/bot{$token}/sendMessage";
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $result = curl_exec($ch);
+
+    if (curl_error($ch)) {
+        dd('Curl error: ' . curl_error($ch));
+    }
+
+    curl_close($ch);
+
+    dd('Telegram response: ' . $result);
+});
 
 require __DIR__ . '/auth.php';

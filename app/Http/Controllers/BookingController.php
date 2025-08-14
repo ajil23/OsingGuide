@@ -19,11 +19,30 @@ class BookingController extends Controller
 
         return view('customer.bookings.index', compact('bookings'));
     }
-    
+
     public function create($guideId)
     {
         $guide = User::findOrFail($guideId);
         return view('customer.bookings.create', compact('guide'));
+    }
+
+
+    private function generateBookingCode()
+    {
+        $characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Hilangkan I, O, 0, 1 agar tidak bingung
+        $length = 6;
+
+        do {
+            $randomPart = '';
+            for ($i = 0; $i < $length; $i++) {
+                $randomPart .= $characters[random_int(0, strlen($characters) - 1)];
+            }
+
+            $code = "G-{$randomPart}"; // G-KL7M2N
+
+        } while (Booking::where('booking_code', $code)->exists());
+
+        return $code;
     }
 
     public function store(Request $request)
@@ -76,8 +95,9 @@ class BookingController extends Controller
 
         $totalPrice = $subTotal + $platformFee;
 
-        Booking::create([
+        $booking = Booking::create([
             'customer_id' => auth()->id(),
+            'booking_code' => $this->generateBookingCode(),
             'guide_id' => $guide->id,
             'guide_profile_id' => $profile->id,
             'start_time' => $request->start_time,
@@ -95,6 +115,78 @@ class BookingController extends Controller
             'fee_value' => $feeValue,
         ]);
 
+        // Kirim Telegram
+        $token = env('TELEGRAM_BOT_TOKEN');
+        $chatId = env('TELEGRAM_CHAT_ID');
+
+        // Pastikan relasi dimuat
+        $booking->load(['customer', 'guide', 'guide.guideProfile']);
+
+        $customer = $booking->customer;
+        $guide = $booking->guide;
+        $profile = $guide->guideProfile;
+
+        $customerName = $customer->name;
+        $customerEmail = $customer->email;
+        $customerPhone = $customer->phone
+            ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', ltrim($customer->phone, '0'))
+            : '-';
+
+        $guideName = $guide->name;
+        $guideLevel = $profile->level ?? '-';
+        $bookingCode = $booking->booking_code;
+        $destination = $booking->destination;
+        $notes = $booking->notes ?? 'Tidak ada';
+
+        // Buat pesan plain text
+        $message  = "🚨 PESANAN BARU DITERIMA 🚨\n\n";
+        $message .= "📦 Detail Pemesanan:\n";
+        $message .= "• Kode: {$bookingCode}\n";
+        $message .= "• Status: {$booking->status}\n\n";
+
+        $message .= "👤 Customer:\n";
+        $message .= "• Nama: {$customerName}\n";
+        $message .= "• Email: {$customerEmail}\n";
+        $message .= "• HP: {$customerPhone}\n\n";
+
+        $message .= "🧑‍✈️ Pemandu:\n";
+        $message .= "• Nama: {$guideName}\n";
+        $message .= "• Level: {$guideLevel}\n\n";
+
+        $message .= "📅 Jadwal:\n";
+        $message .= "• Mulai: {$booking->start_time->format('d M Y H:i')}\n";
+        $message .= "• Selesai: {$booking->end_time->format('d M Y H:i')}\n";
+        $message .= "• Durasi: {$booking->total_days} hari\n";
+        $message .= "• Jumlah Wisatawan: {$booking->number_of_travelers}\n\n";
+
+        $message .= "💰 Total: Rp " . number_format($booking->total_price, 0, ',', '.') . "\n\n";
+        $message .= "📍 Tujuan: {$destination}\n\n";
+        $message .= "📝 Catatan: {$notes}";
+
+        // Kirim ke Telegram
+        $token = env('TELEGRAM_BOT_TOKEN');
+        $chatId = env('TELEGRAM_CHAT_ID');
+
+        $data = [
+            'chat_id' => $chatId,
+            'text' => $message,
+            'disable_web_page_preview' => true
+        ];
+
+        $url = "https://api.telegram.org/bot{$token}/sendMessage";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($ch);
+
+        if (curl_error($ch)) {
+            echo ('Telegram send error: ' . curl_error($ch));
+        }
+        curl_close($ch);
+
+        dd('ss');
         return redirect('/customer/bookings')->with('success', 'Booking berhasil dibuat!');
     }
 }
