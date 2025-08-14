@@ -18,6 +18,7 @@
                             <table class="table align-items-center mb-0">
                                 <thead>
                                     <tr>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Booking ID</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Customer</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Guide</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal</th>
@@ -34,8 +35,15 @@
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
+                                                    <p class="text-xs text-secondary mb-0">{{ $booking->booking_code }}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">{{ $booking->customer->name }}</h6>
-                                                    <p class="text-xs text-secondary mb-0">{{ $booking->customer->email }}</p>
+                                                    <a href="https://wa.me/{{ $booking->customer->phone }}" class="text-xs text-secondary mb-0">{{ $booking->customer->phone }}</a>
                                                 </div>
                                             </div>
                                         </td>
@@ -45,9 +53,9 @@
                                         </td>
                                         <td>
                                             <span class="text-xs">
-                                                {{ $booking->start_time->format('d M Y') }}<br>
+                                                {{ $booking->start_time->format('d M Y H:i') }}<br>
                                                 <small>s/d</small><br>
-                                                {{ $booking->end_time->format('d M Y') }}
+                                                {{ $booking->end_time->format('d M Y H:i') }}
                                             </span>
                                         </td>
                                         <td>

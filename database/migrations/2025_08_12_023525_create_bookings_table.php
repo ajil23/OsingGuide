@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             // Pihak yang terlibat
             $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
+            $table->string('booking_code', 20)->unique();
             $table->foreignId('guide_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('guide_profile_id')->constrained('guide_profiles')->onDelete('cascade');
 
