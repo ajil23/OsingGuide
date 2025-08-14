@@ -23,7 +23,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('landing-page');
+    return view('landing.landing-page');
+});
+
+Route::get('/booking-guide', function () {
+    return view('landing.guide-list');
+});
+
+Route::get('/booking-guide/booking', function () {
+    return view('landing.booking');
 });
 
 Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function () {
