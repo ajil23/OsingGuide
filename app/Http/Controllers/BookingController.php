@@ -186,7 +186,6 @@ class BookingController extends Controller
         }
         curl_close($ch);
 
-        dd('ss');
         return redirect('/customer/bookings')->with('success', 'Booking berhasil dibuat!');
     }
 }
