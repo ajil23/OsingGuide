@@ -28,14 +28,14 @@
                                             </span>
                                         </h6>
                                         <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                            {{ $review->booking->start_time->format('d M Y') }} 
+                                            {{ $review->booking->start_time->format('d M Y') }}
                                             • {{ $review->created_at->diffForHumans() }}
                                         </p>
                                         <p class="text-sm mt-2">
                                             "{{ $review->comment ?? 'Tidak ada komentar.' }}"
                                         </p>
                                         <div class="mt-2">
-                                            <a href="{{ route('customer.guides') }}" class="text-xs text-primary">Lihat profil guide</a>
+                                            <a href="{{ route('customer.list-guides') }}" class="text-xs text-primary">Lihat profil guide</a>
                                         </div>
                                     </div>
                                 </div>

@@ -17,13 +17,13 @@ class BookingController extends Controller
             ->latest()
             ->get();
 
-        return view('customer.bookings.index', compact('bookings'));
+        return view('landing.booking-history', compact('bookings'));
     }
 
     public function create($guideId)
     {
         $guide = User::findOrFail($guideId);
-        return view('customer.bookings.create', compact('guide'));
+        return view('landing.booking', compact('guide'));
     }
 
 

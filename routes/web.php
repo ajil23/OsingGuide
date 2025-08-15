@@ -26,10 +26,6 @@ Route::get('/', function () {
     return view('landing.landing-page');
 });
 
-Route::get('/booking-guide', function () {
-    return view('landing.guide-list');
-});
-
 Route::get('/booking-guide/booking', function () {
     return view('landing.booking');
 });
@@ -58,9 +54,9 @@ Route::prefix('guide')->name('guide.')->middleware('role:guide')->group(function
     Route::get('/reviews', [GuideReviewController::class, 'index'])->name('reviews');
 });
 
-Route::prefix('customer')->name('customer.')->middleware('role:customer')->group(function () {
+Route::prefix('customer')->name('customer.')->middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/dashboard', [CustomerController::class, 'dashboard'])->name('dashboard');
-    Route::get('/guides', [CustomerController::class, 'guides'])->name('guides');
+    Route::get('/list-guides', [CustomerController::class, 'guides'])->name('list-guides');
     Route::get('/bookings', [BookingController::class, 'bookings'])->name('bookings');
     Route::get('/bookings/create/{guideId}', [BookingController::class, 'create'])->name('booking.create');
     Route::post('/bookings', [BookingController::class, 'store'])->name('booking.store');

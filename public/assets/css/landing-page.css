@@ -369,7 +369,118 @@ body { background: var(--white); }
   pointer-events: all;
 }
 
+/* Menu After Login */
 
+.menu-right {
+    display: flex;
+    align-items: center;
+}
+
+/* Profile Dropdown */
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.profile-btn img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.profile-btn .profile-name{
+    color: var(--white);
+    margin-left: 2px;
+}
+
+.header.active .profile-name{
+    color: var(--primary);
+}
+
+.profile-btn .arrow-down {
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    padding: 3px;
+    margin-left: 10px;
+    transform: rotate(45deg);
+    transition: transform 0.3s;
+}
+
+.header.active .arrow-down {
+    border: solid hsl(172, 51%, 15%);
+    border-width: 0 2px 2px 0;
+    padding: 3px;
+    margin-left: 10px;
+    transform: rotate(45deg);
+    transition: transform 0.3s;
+}
+
+.profile-dropdown:hover .arrow-down {
+    transform: rotate(-135deg);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: #fff;
+    min-width: 180px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 999;
+}
+
+.dropdown-content a,
+.dropdown-content button {
+    display: block;
+    padding: 10px 14px;
+    text-decoration: none;
+    color: #333;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+
+.dropdown-content a:hover,
+.dropdown-content button:hover {
+    background: #f5f5f5;
+}
+
+.dropdown-content hr {
+    margin: 6px 0;
+    border: none;
+    border-top: 1px solid #eee;
+}
+
+/* Styling umum untuk logout */
+.dropdown-content .logout-btn {
+    color: red;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+/* Hover spesifik untuk logout */
+.dropdown-content .logout-btn:hover {
+    background: red !important;
+    color: white !important;
+}
+
+.profile-dropdown:hover .dropdown-content {
+    display: block;
+}
 
 
 

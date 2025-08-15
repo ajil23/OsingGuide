@@ -26,6 +26,20 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
         rel="stylesheet">
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+            /* Biar bagian utama ngambil sisa tinggi layar */
+        }
+    </style>
 </head>
 
 <body id="top">
@@ -40,7 +54,6 @@
 
         <div class="header-top">
             <div class="container">
-
                 <a href="tel:+6287864310772" class="helpline-box">
 
                     <div class="icon-box">
@@ -105,73 +118,62 @@
         <article>
             <section class="guide-detail">
                 <div class="container">
-                    <h2 class="h2 section-title">Detail Guide & Booking Form</h2>
-                    <p class="section-text">Check our guide to see if it suits your needs.</p>
+                    <h2 class="h2 section-title">Booking History</h2>
+                    <p class="section-text">Thank you for trusting us to guide your trip.</p>
 
-                    <!-- Detail Guide -->
-                    <div class="guide-info">
-                        <div class="guide-photo">
-                            <img src="{{ $guide->guideProfile->photo ? asset('storage/'.$guide->guideProfile->photo) : asset('assets/img/team-1.jpg') }}"
-                                        alt="{{ $guide->name }}" loading="lazy">
-                        </div>
-                        <div class="guide-desc">
-                            <h2>{{ $guide->name }}</h2>
-                            <p class="guide-category">{{ ucfirst($guide->guideProfile->level) }} Guide</p>
-                            <div class="guide-rating">
-                                <span class="rating-text">{{ number_format($guide->guideProfile->rating ?? 0, 1) }}/5</span>
-                                <ion-icon name="star"></ion-icon>
+                    <!-- History Booking -->
+                    <div class="card shadow-lg mb-10 border-1">
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive p-4">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Guide</th>
+                                            <th>Tanggal</th>
+                                            <th>Durasi</th>
+                                            <th>Status</th>
+                                            <th>Total</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($bookings as $booking)
+                                        <tr>
+                                            <td>{{ $booking->guide->name }}</td>
+                                            <td>
+                                                {{ $booking->start_time->format('d M Y H:i') }} - {{
+                                                $booking->end_time->format('d M Y H:i') }}
+                                            </td>
+                                            <td>{{ $booking->total_days }} hari</td>
+                                            <td>
+                                                <span class="badge bg-gradient-{{
+                                                    $booking->status == 'confirmed' ? 'info' :
+                                                    ($booking->status == 'ongoing' ? 'warning' :
+                                                    ($booking->status == 'completed' ? 'success' : 'secondary'))
+                                                }}">
+                                                    {{ ucfirst($booking->status) }}
+                                                </span>
+                                            </td>
+                                            <td>Rp {{ number_format($booking->total_price, 0, ',', '.') }}</td>
+                                            <td>
+                                                @if($booking->status === 'completed' && !$booking->review)
+                                                <a href="{{ route('customer.review.create', $booking->id) }}"
+                                                    class="btn btn-sm btn-warning">Beri Ulasan</a>
+                                                @else
+                                                <span class="text-muted">Selesai</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center text-muted">Belum ada booking.</td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
                             </div>
-                            <p class="guide-price">Rp. {{ number_format($guide->guideProfile->daily_rate, 0, ',', '.') }} / per day</p>
-                            <p class="guide-bio">Bio : {{ $guide->guideProfile->bio }}</p>
-
-                            <ul class="guide-skills">
-                                @if(!empty($guide->guideProfile->skills) && is_array($guide->guideProfile->skills))
-                                @foreach($guide->guideProfile->skills as $skill)
-                                <li>{{ $skill }}</li>
-                                @endforeach
-                                @else
-                                <li>No skills listed</li>
-                                @endif
-                            </ul>
                         </div>
                     </div>
-
-                    <hr>
-
-                    <!-- Form Pemesanan -->
-                    <div class="booking-form">
-                        <h3>Booking Form of {{ $guide->name }}</h3>
-                        <form action="{{ route('customer.booking.store') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="guide_id" value="{{ $guide->id }}">
-
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label>Start Date</label>
-                                    <input type="datetime-local" name="start_time" class="form-control" required>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label>End Date</label>
-                                    <input type="datetime-local" name="end_time" class="form-control" required>
-                                </div>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label>Number of Participants</label>
-                                <input type="number" name="number_of_travelers" class="form-control" min="1"
-                                    max="{{ $guide->guideProfile->max_travelers }}" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label>Travel Destination</label>
-                                <input type="text" name="destination" class="form-control" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label>Notes (Opsional)</label>
-                                <textarea name="notes" class="form-control"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Booking Now</button>
-                        </form>
-                    </div>
-
                 </div>
             </section>
         </article>
