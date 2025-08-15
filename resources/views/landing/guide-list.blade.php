@@ -144,7 +144,30 @@
 
                 </nav>
 
-                <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
+                <div class="menu-right">
+                    @guest
+                    <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
+                    @endguest
+
+                    @auth
+                    <div class="profile-dropdown">
+                        <button class="profile-btn">
+                            <img src="{{ asset('assets/img/team-1.jpg') }}" alt="Avatar">
+                            <span class="profile-name">{{ Auth::user()->name }}</span>
+                            <i class="arrow-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="#">My Profile</a>
+                            <a href="{{ route('customer.bookings') }}">Booking History</a>
+                            <hr>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="logout-btn">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                    @endauth
+                </div>
 
             </div>
         </div>
@@ -177,6 +200,7 @@
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
+
                 <!--
             - #List Guide
             -->
@@ -242,41 +266,35 @@
 
                         <!-- Konten Card -->
                         <div class="cards-grid" id="guide-list">
-                            <div class="popular-card" data-category="intermediate" data-price="230000" data-language="English"
-                                data-skill="Hiking" data-date="2025-08-01">
+                            @forelse($guides as $guide)
+                            <div class="popular-card" data-category="{{ strtolower($guide->guideProfile->level) }}"
+                                data-price="{{ $guide->guideProfile->daily_rate }}"
+                                data-language="{{ implode(',', $guide->guideProfile->languages) }}"
+                                data-skill="{{ implode(',', $guide->guideProfile->skills) }}" data-date="">
+
                                 <figure class="card-img">
-                                    <img src="{{ asset('assets/img/team-1.jpg') }}" alt="Photo" loading="lazy">
+                                    <img src="{{ $guide->guideProfile->photo ? asset('storage/'.$guide->guideProfile->photo) : asset('assets/img/team-1.jpg') }}"
+                                        alt="{{ $guide->name }}" loading="lazy">
                                 </figure>
+
                                 <div class="card-content">
                                     <div class="card-rating">
-                                        <span class="rating-text">5/5</span>
+                                        <span class="rating-text">{{ number_format($guide->guideProfile->rating ?? 0, 1) }}/5</span>
                                         <ion-icon name="star"></ion-icon>
                                     </div>
-                                    <p class="card-subtitle">Intermediate</p>
-                                    <h3 class="h3 card-title">Rovita Mei</h3>
-                                    <p class="card-text">Rp. 230.000 / per day</p>
-                                    <a href="/booking-guide/booking">
+                                    <p class="card-subtitle">{{ ucfirst($guide->guideProfile->level) }}</p>
+                                    <h3 class="h3 card-title">{{ $guide->name }}</h3>
+                                    <p class="card-text">
+                                        Rp. {{ number_format($guide->guideProfile->daily_rate, 0, ',', '.') }} / per day
+                                    </p>
+                                    <a href="{{ route('customer.booking.create', $guide->id) }}">
                                         <button type="button" class="btn-book-now">Book Now</button>
                                     </a>
                                 </div>
                             </div>
-
-                            <div class="popular-card" data-category="junior" data-price="145000" data-language="Indonesian"
-                                data-skill="Photography" data-date="2025-08-10">
-                                <figure class="card-img">
-                                    <img src="{{ asset('assets/img/team-1.jpg') }}" alt="Photo" loading="lazy">
-                                </figure>
-                                <div class="card-content">
-                                    <div class="card-rating">
-                                        <span class="rating-text">4.5/5</span>
-                                        <ion-icon name="star"></ion-icon>
-                                    </div>
-                                    <p class="card-subtitle">Junior</p>
-                                    <h3 class="h3 card-title">Rosa Madinah</h3>
-                                    <p class="card-text">Rp. 145.000 / per day</p>
-                                    <button type="button" class="btn-book-now">Book Now</button>
-                                </div>
-                            </div>
+                            @empty
+                            <p class="section-text">No guides available for your filters.</p>
+                            @endforelse
                         </div>
                     </div>
                 </div>

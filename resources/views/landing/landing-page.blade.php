@@ -142,8 +142,30 @@
 
                 </nav>
 
-                <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
+                <div class="menu-right">
+                    @guest
+                    <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
+                    @endguest
 
+                    @auth
+                    <div class="profile-dropdown">
+                        <button class="profile-btn">
+                            <img src="{{ asset('assets/img/team-1.jpg') }}" alt="Avatar">
+                            <span class="profile-name">{{ Auth::user()->name }}</span>
+                            <i class="arrow-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="#">My Profile</a>
+                            <a href="{{ route('customer.bookings') }}">Booking History</a>
+                            <hr>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="logout-btn">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                    @endauth
+                </div>
             </div>
         </div>
 
@@ -168,7 +190,7 @@
                     <div class="btn-group">
                         <button class="btn btn-primary">Learn more</button>
 
-                        <a href="/booking-guide/#guide" class="btn btn-secondary">Book Now</a>
+                        <a href="{{ route('customer.list-guides') }}" class="btn btn-secondary">Book Now</a>
                     </div>
 
                 </div>
@@ -182,7 +204,7 @@
                 <div class="container">
                     <h2 class="menu-title">Our Menu</h2>
                     <div class="tour-menu">
-                        <a href="/booking-guide/#guide" class="menu-item">
+                        <a href="{{ route('customer.list-guides') }}" class="menu-item">
                             <img src="{{ asset('assets/img/landing-page/guide-icon.svg') }}" alt="Booking Guide">
                             <h3>Booking Guide</h3>
                         </a>
@@ -210,10 +232,7 @@
                     <h2 class="h2 section-title">Popular Place to Visit in Banyuwangi</h2>
 
                     <p class="section-text">
-                        Fusce hic augue velit wisi quibusdam pariatur, iusto primis, nec nemo, rutrum. Vestibulum cumque
-                        laudantium.
-                        Sit ornare
-                        mollitia tenetur, aptent.
+                        There are many tourist attractions in Banyuwangi that must be visited, starting from mountains, forests or beaches and they certainly will not disappoint.
                     </p>
 
                     <ul class="popular-list">
@@ -337,15 +356,12 @@
             <section class="package" id="recommendation">
                 <div class="container">
 
-                    <p class="section-subtitle">Checkout Our Guide to Help Your Travel</p>
+                    <p class="section-subtitle">Check Our Guide to Help Your Travel</p>
 
                     <h2 class="h2 section-title">Guide Recommendation</h2>
 
                     <p class="section-text">
-                        Fusce hic augue velit wisi quibusdam pariatur, iusto primis, nec nemo, rutrum. Vestibulum cumque
-                        laudantium.
-                        Sit ornare
-                        mollitia tenetur, aptent.
+                        We provide guides who are professional in their duties who will definitely guide you to get to know more about the city of Banyuwangi.
                     </p>
 
                     <ul class="package-list">
@@ -574,7 +590,7 @@
 
                     </ul>
 
-                    <a href="/booking-guide/#guide">
+                    <a href="{{ route('customer.list-guides') }}">
                         <button class="btn btn-primary">View All Guide</button>
                     </a>
 
@@ -593,10 +609,7 @@
                     <h2 class="h2 section-title">Photo's From Travellers</h2>
 
                     <p class="section-text">
-                        Fusce hic augue velit wisi quibusdam pariatur, iusto primis, nec nemo, rutrum. Vestibulum cumque
-                        laudantium.
-                        Sit ornare
-                        mollitia tenetur, aptent.
+                        These beautiful photos were captured as very beautiful memories while exploring Banyuwangi.
                     </p>
 
                     <ul class="gallery-list">
