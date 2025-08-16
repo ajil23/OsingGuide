@@ -37,6 +37,7 @@ Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function
     Route::get('/settings/commission', [AdminController::class, 'commissionSettings'])->name('settings.commission');
     Route::post('/settings/commission', [AdminController::class, 'updateCommission']);
     Route::get('/guides', [AdminController::class, 'manageGuides'])->name('guides');
+    Route::post('/guides/{id}/level', [AdminController::class, 'updateGuideLevel'])->name('guide.level');
     Route::get('/guides/{id}', [AdminController::class, 'guideDetail'])->name('guide.detail');
     Route::post('/guides/{id}/toggle-status', [AdminController::class, 'toggleGuideStatus'])->name('guide.toggle');
     Route::get('/customers', [AdminController::class, 'manageCustomers'])->name('customers');
@@ -50,6 +51,7 @@ Route::prefix('guide')->name('guide.')->middleware('role:guide')->group(function
     Route::post('/profile', [GuideProfileController::class, 'update'])->name('profile.update');
     Route::get('/availability', [GuideAvailabilityController::class, 'index'])->name('availability');
     Route::post('/availability', [GuideAvailabilityController::class, 'store'])->name('availability.store');
+    Route::post('/availability/bulk', [GuideAvailabilityController::class, 'storeBulk'])->name('availability.bulk');
     Route::delete('/availability/{id}', [GuideAvailabilityController::class, 'destroy'])->name('availability.destroy');
     Route::get('/reviews', [GuideReviewController::class, 'index'])->name('reviews');
 });
@@ -62,36 +64,6 @@ Route::prefix('customer')->name('customer.')->middleware(['auth', 'role:customer
     Route::post('/bookings', [BookingController::class, 'store'])->name('booking.store');
     Route::get('/reviews/create/{bookingId}', [ReviewController::class, 'create'])->name('review.create');
     Route::post('/reviews', [ReviewController::class, 'store'])->name('review.store');
-});
-
-Route::get('/test-telegram', function () {
-    $token = env('TELEGRAM_BOT_TOKEN');
-    $chatId = env('TELEGRAM_CHAT_ID');
-
-    $message = "Test kirim pesan dari Laravel 🚀";
-
-    $data = [
-        'chat_id' => $chatId,
-        'text' => $message,
-        'parse_mode' => 'HTML'
-    ];
-
-    $url = "https://api.telegram.org/bot{$token}/sendMessage";
-
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $result = curl_exec($ch);
-
-    if (curl_error($ch)) {
-        dd('Curl error: ' . curl_error($ch));
-    }
-
-    curl_close($ch);
-
-    dd('Telegram response: ' . $result);
 });
 
 require __DIR__ . '/auth.php';

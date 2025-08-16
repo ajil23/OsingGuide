@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\GuideAvailability;
 use App\Models\Setting;
 use App\Models\User;
 use Carbon\Carbon;
@@ -64,8 +65,16 @@ class BookingController extends Controller
             return back()->withErrors(['number_of_travelers' => "Maksimal {$profile->max_travelers} orang."]);
         }
 
-        // Cek ketersediaan (sederhana: cek konflik booking)
-        $conflict = Booking::where('guide_id', $guide->id)
+        $start = Carbon::parse($request->start_time)->startOfDay();
+        $end = Carbon::parse($request->end_time)->endOfDay();
+
+        $datesInRange = [];
+        for ($date = $start->copy(); $date->lte($end); $date->addDay()) {
+            $datesInRange[] = $date->format('Y-m-d');
+        }
+
+        // 1. Cek konflik booking
+        $hasBookingConflict = Booking::where('guide_id', $guide->id)
             ->where('status', '!=', 'cancelled')
             ->where(function ($q) use ($request) {
                 $q->whereBetween('start_time', [$request->start_time, $request->end_time])
@@ -76,8 +85,18 @@ class BookingController extends Controller
                     });
             })->exists();
 
-        if ($conflict) {
-            return back()->withErrors(['start_time' => 'Guide tidak tersedia di tanggal tersebut.']);
+        // 2. Cek apakah SEMUA tanggal di rentang sudah di-set 'available'
+        $availableDatesCount = GuideAvailability::where('guide_id', $guide->id)
+            ->whereIn('date', $datesInRange)
+            ->where('status', 'available')
+            ->count();
+
+        $allDatesAvailable = $availableDatesCount === count($datesInRange);
+
+        if ($hasBookingConflict || !$allDatesAvailable) {
+            return back()->withErrors([
+                'start_time' => 'Guide tidak tersedia pada tanggal yang dipilih. Harap pilih tanggal yang sudah ditandai tersedia.'
+            ]);
         }
 
         // Hitung harga
@@ -114,7 +133,7 @@ class BookingController extends Controller
             'fee_type' => $feeType,
             'fee_value' => $feeValue,
         ]);
-
+        
         // Kirim Telegram
         $token = env('TELEGRAM_BOT_TOKEN');
         $chatId = env('TELEGRAM_CHAT_ID');

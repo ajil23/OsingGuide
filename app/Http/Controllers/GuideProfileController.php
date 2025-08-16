@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class GuideProfileController extends Controller
 {
-        public function edit()
+    public function edit()
     {
         $profile = auth()->user()->guideProfile ?? new GuideProfile();
         return view('guide.profile.edit', compact('profile'));
@@ -22,7 +22,6 @@ class GuideProfileController extends Controller
             'skills' => 'required|array',
             'daily_rate' => 'required|numeric|min:100000',
             'max_travelers' => 'required|integer|min:1|max:20',
-            'level' => 'required|in:junior,intermediate,expert',
         ]);
 
         $guide = auth()->user();
