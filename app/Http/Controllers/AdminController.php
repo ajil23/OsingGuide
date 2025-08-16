@@ -120,6 +120,25 @@ class AdminController extends Controller
         return back()->with('success', "Status guide diubah menjadi {$status}.");
     }
 
+    public function updateGuideLevel(Request $request, $id)
+    {
+        $request->validate([
+            'level' => 'required|in:junior,intermediate,expert'
+        ]);
+
+        $guide = User::where('id', $id)->where('role', 'guide')->firstOrFail();
+
+        $profile = $guide->guideProfile;
+        if (!$profile) {
+            return back()->with('error', 'Profil guide belum dibuat.');
+        }
+
+        $profile->level = $request->level;
+        $profile->save();
+
+        return back()->with('success', "Level guide berhasil diubah menjadi {$profile->level}.");
+    }
+
     public function manageCustomers()
     {
         $customers = User::where('role', 'customer')

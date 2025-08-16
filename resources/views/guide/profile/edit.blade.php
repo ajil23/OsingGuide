@@ -31,11 +31,12 @@
 
                             <div class="mb-3">
                                 <label>Level</label>
-                                <select name="level" class="form-control" required>
+                                <select name="level" class="form-control" disabled>
                                     <option value="junior" {{ $profile->level == 'junior' ? 'selected' : '' }}>Junior</option>
                                     <option value="intermediate" {{ $profile->level == 'intermediate' ? 'selected' : '' }}>Intermediate</option>
                                     <option value="expert" {{ $profile->level == 'expert' ? 'selected' : '' }}>Expert</option>
                                 </select>
+                                <small class="text-muted">Level hanya bisa diubah oleh admin.</small>
                             </div>
 
                             <div class="mb-3">
