@@ -47,6 +47,7 @@ Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function
 Route::prefix('guide')->name('guide.')->middleware('role:guide')->group(function () {
     Route::get('/dashboard', [GuideController::class, 'dashboard'])->name('dashboard');
     Route::get('/bookings', [GuideController::class, 'bookings'])->name('bookings');
+    Route::post('/bookings/{id}complete', [GuideController::class, 'markAsCompleted'])->name('booking.complete');
     Route::get('/profile/edit', [GuideProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [GuideProfileController::class, 'update'])->name('profile.update');
     Route::get('/availability', [GuideAvailabilityController::class, 'index'])->name('availability');

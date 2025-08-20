@@ -21,7 +21,8 @@ return new class extends Migration
             $table->decimal('daily_rate', 10, 2);
             $table->integer('max_travelers')->unsigned()->default(4);
             $table->string('level')->default('junior');
-            $table->string('status')->default('active');
+            $table->string('status')->default('inactive');
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }

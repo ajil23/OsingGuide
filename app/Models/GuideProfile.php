@@ -18,6 +18,7 @@ class GuideProfile extends Model
         'max_travelers',
         'level', // junior, intermediate, expert
         'status', // active, inactive (ganti availability jadi status)
+        'photo',
     ];
 
     protected $casts = [

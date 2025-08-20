@@ -6,6 +6,9 @@
         <div class="container-fluid py-4">
             <div class="row">
                 <div class="col-12">
+                    @if (session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
                     <div class="card">
                         <div class="card-header pb-0">
                             <h6>Pemesanan Saya</h6>
@@ -46,6 +49,15 @@
                                                                     : 'secondary')) }}">
                                                         {{ ucfirst($booking->status) }}
                                                     </span>
+                                                    @if($booking->status === 'ongoing')
+                                                        <form action="{{ route('guide.booking.complete', $booking->id) }}" method="POST" class="mt-2">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-sm btn-success" 
+                                                                    onclick="return confirm('Apakah perjalanan ini sudah selesai?')">
+                                                                Tandai Selesai
+                                                            </button>
+                                                        </form>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @empty

@@ -30,17 +30,18 @@ class BookingController extends Controller
 
     private function generateBookingCode()
     {
-        $characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Hilangkan I, O, 0, 1 agar tidak bingung
-        $length = 6;
+        $characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        $randomLength = 4;
+
+        $datePart = now()->format('yymdHi'); // YYMMDD
 
         do {
             $randomPart = '';
-            for ($i = 0; $i < $length; $i++) {
+            for ($i = 0; $i < $randomLength; $i++) {
                 $randomPart .= $characters[random_int(0, strlen($characters) - 1)];
             }
 
-            $code = "G-{$randomPart}"; // G-KL7M2N
-
+            $code = "G-{$datePart}-{$randomPart}";
         } while (Booking::where('booking_code', $code)->exists());
 
         return $code;
@@ -133,7 +134,7 @@ class BookingController extends Controller
             'fee_type' => $feeType,
             'fee_value' => $feeValue,
         ]);
-        
+
         // Kirim Telegram
         $token = env('TELEGRAM_BOT_TOKEN');
         $chatId = env('TELEGRAM_CHAT_ID');
