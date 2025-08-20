@@ -157,8 +157,16 @@
                                             <td>Rp {{ number_format($booking->total_price, 0, ',', '.') }}</td>
                                             <td>
                                                 @if($booking->status === 'completed' && !$booking->review)
-                                                <a href="{{ route('customer.review.create', $booking->id) }}"
-                                                    class="btn btn-sm btn-warning">Beri Ulasan</a>
+                                                <a href="{{ route('customer.review.create', $booking->id) }}" class="btn btn-sm btn-warning">Beri Ulasan</a>
+                                                @elseif($booking->status === 'confirmed' || $booking->status === 'ongoing')
+                                                @if($booking->guide && $booking->guide->phone)
+                                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $booking->guide->phone) }}" target="_blank"
+                                                    class="btn btn-sm btn-success">
+                                                    Hubungi Guide
+                                                </a>
+                                                @else
+                                                <span class="text-muted">No WhatsApp Guide tidak tersedia</span>
+                                                @endif
                                                 @else
                                                 <span class="text-muted">Selesai</span>
                                                 @endif

@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678'), // ganti dengan password aman
             'role' => 'admin',
-            'phone' => '081234567890'
+            'phone' => '+6281234567890'
         ]);
 
         // Guide
@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
             'email' => 'rovita@gmail.com',
             'password' => Hash::make('12345678'),
             'role' => 'guide',
-            'phone' => '081234567891'
+            'phone' => '+6281234567891'
         ]);
 
         // Customer
@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
             'email' => 'rio@gmail.com',
             'password' => Hash::make('12345678'),
             'role' => 'customer',
-            'phone' => '081234567892'
+            'phone' => '+6281234567892'
         ]);
     }
 }

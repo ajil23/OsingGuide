@@ -5,9 +5,9 @@
             aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/argon-dashboard/pages/dashboard.html "
             target="_blank">
-            <img src="{{ asset('assets/img/logo-ct-dark.png') }}" width="26px" height="26px"
+            <img src="{{ asset('assets/img/landing-page/osingguide-logo.svg') }}" width="26px" height="26px"
                 class="navbar-brand-img h-100" alt="main_logo">
-            <span class="ms-1 font-weight-bold">Creative Tim</span>
+            <span class="ms-1 font-weight-bold">Osing Guide Dashboard</span>
         </a>
     </div>
     <hr class="horizontal dark mt-0">
@@ -63,6 +63,48 @@
                         </div>
                         <span class="nav-link-text ms-1">Commission Settings</span>
                     </a>
+                </li>
+                {{-- Content Management --}}
+                <li class="nav-item mt-2">
+                    <a class="nav-link {{ request()->routeIs('admin.places*') || request()->routeIs('admin.gallery*') || request()->routeIs('admin.about*') || request()->routeIs('admin.contact*') ? 'active' : '' }}"
+                        data-bs-toggle="collapse" href="#masterData" role="button"
+                        aria-expanded="{{ request()->routeIs('admin.places*') || request()->routeIs('admin.gallery*') || request()->routeIs('admin.about*') || request()->routeIs('admin.contact*') ? 'true' : 'false' }}"
+                        aria-controls="masterData">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-briefcase-24 text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Content Management</span>
+                    </a>
+                    <div class="collapse {{ request()->routeIs('admin.places*') || request()->routeIs('admin.gallery*') || request()->routeIs('admin.about*') || request()->routeIs('admin.contact*') ? 'show' : '' }}"
+                        id="masterData">
+                        <ul class="nav flex-column ms-4">
+                            <li class="nav-item mt-2">
+                                <a class="nav-link {{ request()->routeIs('admin.places*') ? 'active' : '' }}"
+                                    href="{{ route('admin.places.index') }}">
+                                    Place to Visit
+                                </a>
+                            </li>
+                            <li class="nav-item mt-2">
+                                <a class="nav-link {{ request()->routeIs('admin.gallery*') ? 'active' : '' }}"
+                                    href="{{ route('admin.gallery.index') }}">
+                                    Gallery
+                                </a>
+                            </li>
+                            <li class="nav-item mt-2">
+                                <a class="nav-link {{ request()->routeIs('admin.about*') ? 'active' : '' }}"
+                                    href="{{ route('admin.about.index') }}">
+                                    About
+                                </a>
+                            </li>
+                            <li class="nav-item mt-2">
+                                <a class="nav-link {{ request()->routeIs('admin.contact*') ? 'active' : '' }}"
+                                    href="{{ route('admin.contact.index') }}">
+                                    Contact
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
             </ul>
         </div>

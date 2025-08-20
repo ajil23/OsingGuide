@@ -18,17 +18,15 @@
                             <form action="{{ route('guide.profile.update') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
 
-                                <div class="mb-3">
-                                    <label>Nama Lengkap</label>
-                                    <input type="text" class="form-control" value="{{ auth()->user()->name }}" disabled>
-                                    <small class="text-muted">Nama hanya bisa diubah oleh admin.</small>
-                                </div>
+                            <div class="mb-3">
+                                <label>Nama Lengkap</label>
+                                <input type="text" class="form-control" value="{{ auth()->user()->name }}">
+                            </div>
 
-                                <div class="mb-3">
-                                    <label>HP</label>
-                                    <input type="text" name="phone" class="form-control"
-                                        value="{{ auth()->user()->phone }}" placeholder="081234567890">
-                                </div>
+                            <div class="mb-3">
+                                <label>WhatsApp Number</label>
+                                <input type="text" name="phone" class="form-control" value="{{ auth()->user()->phone }}" placeholder="081234567890">
+                            </div>
 
                                 <div class="mb-3">
                                     <label>Level</label>
@@ -110,7 +108,7 @@
                 </div>
             </div>
 
-            @include('layouts.footer')
-        </div>
-    </main>
+        @include('layouts.footer')
+    </div>
+</main>
 @endsection

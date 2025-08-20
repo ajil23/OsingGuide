@@ -35,14 +35,16 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required', 'in:admin,guide,customer'],
+            'country_code' => 'required',
+            'phone_number' => 'required|regex:/^[1-9][0-9]{6,14}$/',
         ]);
-        
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
-            'phone' => $request->phone,
+            'phone' => $request->country_code . $request->phone_number,
         ]);
 
         event(new Registered($user));

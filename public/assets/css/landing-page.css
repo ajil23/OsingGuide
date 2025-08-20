@@ -1122,6 +1122,7 @@ body { background: var(--white); }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+  margin-bottom: 40px;
 }
 
 .gallery-image {
@@ -1138,6 +1139,8 @@ body { background: var(--white); }
   height: 100%;
   object-fit: cover;
 }
+
+.gallery .btn { margin-inline: auto; }
 
 
 
