@@ -178,7 +178,7 @@
         <article>
 
             <!-- Carousel Section -->
-            <div class="swiper heroSwiper">
+            {{-- <div class="swiper heroSwiper">
                 <div class="swiper-wrapper">
 
                     <div class="swiper-slide">
@@ -199,14 +199,14 @@
                 <div class="swiper-pagination"></div>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
-            </div>
+            </div> --}}
 
                 <!--
             - #List Guide
             -->
 
             <section class="package" id="guide">
-                <div class="container">
+                <div class="container" style="margin-top: 80px">
                     <p class="section-subtitle">Check Our Guide to Help Your Travel</p>
                     <h2 class="h2 section-title">List Guide</h2>
                     <p class="section-text">List of our guide in OsingGuide.</p>

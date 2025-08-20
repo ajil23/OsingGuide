@@ -40,7 +40,7 @@
         <div class="header-top">
             <div class="container">
 
-                <a href="tel:+6287864310772" class="helpline-box">
+                <a href="tel:{{ $contact->no_telp }}" class="helpline-box">
 
                     <div class="icon-box">
                         <ion-icon name="call-outline"></ion-icon>
@@ -49,7 +49,7 @@
                     <div class="wrapper">
                         <p class="helpline-title">For Further Inquires :</p>
 
-                        <p class="helpline-number">+6287864310772</p>
+                        <p class="helpline-number">{{ $contact->no_telp }}</p>
                     </div>
 
                 </a>
@@ -232,119 +232,52 @@
                     <h2 class="h2 section-title">Popular Place to Visit in Banyuwangi</h2>
 
                     <p class="section-text">
-                        There are many tourist attractions in Banyuwangi that must be visited, starting from mountains, forests or beaches and they certainly will not disappoint.
+                        There are many tourist attractions in Banyuwangi that must be visited, starting from mountains, forests or
+                        beaches and they certainly will not disappoint.
                     </p>
 
                     <ul class="popular-list">
-
+                        @foreach($places as $place)
                         <li>
                             <div class="popular-card">
 
                                 <figure class="card-img">
-                                    <img src="{{ asset('assets/img/landing-page/ijen-photo.jpeg') }}"
-                                        alt="Kawah Ijen, Banyuwangi" loading="lazy">
+                                    <img src="{{ asset('storage/' . $place->image) }}" alt="{{ $place->name_place }}"
+                                        loading="lazy">
                                 </figure>
 
                                 <div class="card-content">
 
                                     <div class="card-rating">
-                                        <ion-icon name="star"></ion-icon>
-                                        <ion-icon name="star"></ion-icon>
-                                        <ion-icon name="star"></ion-icon>
-                                        <ion-icon name="star"></ion-icon>
-                                        <ion-icon name="star"></ion-icon>
+                                        @for($i = 0; $i < $place->rating; $i++)
+                                            <ion-icon name="star"></ion-icon>
+                                            @endfor
                                     </div>
 
                                     <p class="card-subtitle">
-                                        <a href="#">Banyuwangi</a>
+                                        {{ $place->location }}
                                     </p>
 
                                     <h3 class="h3 card-title">
-                                        <a href="#">Ijen Creater</a>
+                                        <a href="#">
+                                            {{ $place->name_place }}
+                                        </a>
                                     </h3>
 
                                     <p class="card-text">
-                                        Kawah Ijen is most visited place
+                                        {{ Str::limit($place->content, 25, '...') }}
                                     </p>
 
                                 </div>
 
                             </div>
                         </li>
-
-                        <li>
-                            <div class="popular-card">
-
-                                <figure class="card-img">
-                                    <img src="{{ asset('assets/img/landing-page/pulau-merah.jpeg') }}"
-                                        alt="Pulau Merah, Banyuwangi" loading="lazy">
-                                </figure>
-
-                                <div class="card-content">
-
-                                    <div class="card-rating">
-                                        <ion-icon name="star"></ion-icon>
-                                        <ion-icon name="star"></ion-icon>
-                                        <ion-icon name="star"></ion-icon>
-                                        <ion-icon name="star"></ion-icon>
-                                        <ion-icon name="star"></ion-icon>
-                                    </div>
-
-                                    <p class="card-subtitle">
-                                        <a href="#">Banyuwangi</a>
-                                    </p>
-
-                                    <h3 class="h3 card-title">
-                                        <a href="#">Red Island</a>
-                                    </h3>
-
-                                    <p class="card-text">
-                                        Most Beach Viewed.
-                                    </p>
-
-                                </div>
-
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="popular-card">
-
-                                <figure class="card-img">
-                                    <img src="{{ asset('assets/img/landing-page/djawatan.jpeg') }}"
-                                        alt="Djawatan, Banyuwangi" loading="lazy">
-                                </figure>
-
-                                <div class="card-content">
-
-                                    <div class="card-rating">
-                                        <ion-icon name="star"></ion-icon>
-                                        <ion-icon name="star"></ion-icon>
-                                        <ion-icon name="star"></ion-icon>
-                                        <ion-icon name="star"></ion-icon>
-                                        <ion-icon name="star"></ion-icon>
-                                    </div>
-
-                                    <p class="card-subtitle">
-                                        <a href="#">Banyuwangi</a>
-                                    </p>
-
-                                    <h3 class="h3 card-title">
-                                        <a href="#">Djawatan</a>
-                                    </h3>
-
-                                    <p class="card-text">
-                                        forest like in fantasy.
-                                    </p>
-
-                                </div>
-
-                            </div>
-                        </li>
-
+                        @endforeach
                     </ul>
 
-                    <button class="btn btn-primary">More destination</button>
+                    <a href="#">
+                        <button class="btn btn-primary">More Place Destination</button>
+                    </a>
 
                 </div>
             </section>
@@ -361,53 +294,42 @@
                     <h2 class="h2 section-title">Guide Recommendation</h2>
 
                     <p class="section-text">
-                        We provide guides who are professional in their duties who will definitely guide you to get to know more about the city of Banyuwangi.
+                        We provide guides who are professional in their duties who will definitely guide you to get to know more
+                        about the city of Banyuwangi.
                     </p>
 
                     <ul class="package-list">
-
+                        @foreach($guides as $guide)
                         <li>
                             <div class="package-card">
 
                                 <figure class="card-banner">
-                                    <img src="{{ asset('assets/img/team-1.jpg') }}" alt="Rovita Mei Andini"
-                                        loading="lazy">
+                                    <img src="{{ $guide->guideProfile->photo ? asset('storage/'.$guide->guideProfile->photo) : asset('assets/img/team-1.jpg') }}"
+                                        alt="{{ $guide->name }}" loading="lazy">
                                 </figure>
 
                                 <div class="card-content">
 
-                                    <h3 class="h3 card-title">Rovita Mei Andini</h3>
+                                    <h3 class="h3 card-title">{{ $guide->name }}</h3>
 
                                     <p class="card-text">
-                                        English Langguage, Great Communication, etc.
+                                        {{ $guide->guideProfile->bio }}
                                     </p>
 
                                     <ul class="card-meta-list">
-
-                                        <li class="card-meta-item">
-                                            <div class="meta-box">
-                                                <ion-icon name="time"></ion-icon>
-
-                                                <p class="text">Avail</p>
-                                            </div>
-                                        </li>
-
                                         <li class="card-meta-item">
                                             <div class="meta-box">
                                                 <ion-icon name="people"></ion-icon>
-
-                                                <p class="text">Intermediate</p>
+                                                <p class="text">{{ ucfirst($guide->guideProfile->level) }} Guide</p>
                                             </div>
                                         </li>
 
                                         <li class="card-meta-item">
                                             <div class="meta-box">
                                                 <ion-icon name="location"></ion-icon>
-
                                                 <p class="text">Banyuwangi</p>
                                             </div>
                                         </li>
-
                                     </ul>
 
                                 </div>
@@ -415,179 +337,28 @@
                                 <div class="card-price">
 
                                     <div class="wrapper">
-
-                                        <p class="reviews">(50 reviews)</p>
+                                        <p class="reviews">({{ $guide->reviews_count }} reviews)</p>
 
                                         <div class="card-rating">
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
+                                            <span class="rating-text">{{ number_format($guide->guideProfile->rating ?? 0, 1) }}/5</span>
                                             <ion-icon name="star"></ion-icon>
                                         </div>
-
                                     </div>
 
                                     <p class="price">
-                                        Rp.230.000
+                                        Rp. {{ number_format($guide->guideProfile->daily_rate, 0, ',', '.') }}
                                         <span>/ per day</span>
                                     </p>
 
-                                    <button class="btn btn-secondary">Book Now</button>
+                                    <a href="{{ route('customer.booking.create', $guide->id) }}">
+                                        <button class="btn btn-secondary">Book Now</button>
+                                    </a>
 
                                 </div>
 
                             </div>
                         </li>
-
-                        <li>
-                            <div class="package-card">
-
-                                <figure class="card-banner">
-                                    <img src="{{ asset('assets/img/team-1.jpg') }}"
-                                        alt="Summer Holiday To The Oxolotan River" loading="lazy">
-                                </figure>
-
-                                <div class="card-content">
-
-                                    <h3 class="h3 card-title">Rosa Madinah</h3>
-
-                                    <p class="card-text">
-                                        English Langguage, Great Communication, etc.
-                                    </p>
-
-                                    <ul class="card-meta-list">
-
-                                        <li class="card-meta-item">
-                                            <div class="meta-box">
-                                                <ion-icon name="time"></ion-icon>
-
-                                                <p class="text">Avail</p>
-                                            </div>
-                                        </li>
-
-                                        <li class="card-meta-item">
-                                            <div class="meta-box">
-                                                <ion-icon name="people"></ion-icon>
-
-                                                <p class="text">Junior</p>
-                                            </div>
-                                        </li>
-
-                                        <li class="card-meta-item">
-                                            <div class="meta-box">
-                                                <ion-icon name="location"></ion-icon>
-
-                                                <p class="text">Muncar</p>
-                                            </div>
-                                        </li>
-
-                                    </ul>
-
-                                </div>
-
-                                <div class="card-price">
-
-                                    <div class="wrapper">
-
-                                        <p class="reviews">(20 reviews)</p>
-
-                                        <div class="card-rating">
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                        </div>
-
-                                    </div>
-
-                                    <p class="price">
-                                        Rp.145.000
-                                        <span>/ per day</span>
-                                    </p>
-
-                                    <button class="btn btn-secondary">Book Now</button>
-
-                                </div>
-
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="package-card">
-
-                                <figure class="card-banner">
-                                    <img src="{{ asset('assets/img/team-3.jpg') }}"
-                                        alt="Santorini Island's Weekend Vacation" loading="lazy">
-                                </figure>
-
-                                <div class="card-content">
-
-                                    <h3 class="h3 card-title">Azril Praya</h3>
-
-                                    <p class="card-text">
-                                        English Langguage, Great Communication, etc.
-                                    </p>
-
-                                    <ul class="card-meta-list">
-
-                                        <li class="card-meta-item">
-                                            <div class="meta-box">
-                                                <ion-icon name="time"></ion-icon>
-
-                                                <p class="text">Avail</p>
-                                            </div>
-                                        </li>
-
-                                        <li class="card-meta-item">
-                                            <div class="meta-box">
-                                                <ion-icon name="people"></ion-icon>
-
-                                                <p class="text">Junior</p>
-                                            </div>
-                                        </li>
-
-                                        <li class="card-meta-item">
-                                            <div class="meta-box">
-                                                <ion-icon name="location"></ion-icon>
-
-                                                <p class="text">Rogojampi</p>
-                                            </div>
-                                        </li>
-
-                                    </ul>
-
-                                </div>
-
-                                <div class="card-price">
-
-                                    <div class="wrapper">
-
-                                        <p class="reviews">(40 reviews)</p>
-
-                                        <div class="card-rating">
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                        </div>
-
-                                    </div>
-
-                                    <p class="price">
-                                        Rp.115.000
-                                        <span>/ per day</span>
-                                    </p>
-
-                                    <button class="btn btn-secondary">Book Now</button>
-
-                                </div>
-
-                            </div>
-                        </li>
-
+                        @endforeach
                     </ul>
 
                     <a href="{{ route('customer.list-guides') }}">
@@ -596,7 +367,6 @@
 
                 </div>
             </section>
-
             <!--
         - #GALLERY
       -->
@@ -614,37 +384,19 @@
 
                     <ul class="gallery-list">
 
+                        @foreach($galleries as $gallery)
                         <li class="gallery-item">
                             <figure class="gallery-image">
-                                <img src="{{ asset('assets/img/landing-page/gallery-1.jpg') }}" alt="Gallery image">
+                                <img src="{{ asset('storage/' . $gallery->image) }}" alt="Gallery Images">
                             </figure>
                         </li>
-
-                        <li class="gallery-item">
-                            <figure class="gallery-image">
-                                <img src="{{ asset('assets/img/landing-page/gallery-2.jpg') }}" alt="Gallery image">
-                            </figure>
-                        </li>
-
-                        <li class="gallery-item">
-                            <figure class="gallery-image">
-                                <img src="{{ asset('assets/img/landing-page/gallery-3.jpg') }}" alt="Gallery image">
-                            </figure>
-                        </li>
-
-                        <li class="gallery-item">
-                            <figure class="gallery-image">
-                                <img src="{{ asset('assets/img/landing-page/gallery-4.jpg') }}" alt="Gallery image">
-                            </figure>
-                        </li>
-
-                        <li class="gallery-item">
-                            <figure class="gallery-image">
-                                <img src="{{ asset('assets/img/landing-page/gallery-5.jpg') }}" alt="Gallery image">
-                            </figure>
-                        </li>
+                        @endforeach
 
                     </ul>
+
+                    <a href="#">
+                        <button class="btn btn-primary">More Photo's</button>
+                    </a>
 
                 </div>
             </section>
@@ -667,7 +419,7 @@
                         </p>
                     </div>
 
-                    <a href="https://wa.me/6287864310772?text=Hallo%2C%20saya%20ingin%20konsultasi%20perjalanan%20wisata">
+                    <a href="https://wa.me/{{ $contact->no_telp }}?text=Hallo%2C%20saya%20ingin%20konsultasi%20perjalanan%20wisata">
                         <button class="btn btn-secondary">Get Free Consultation Now!</button>
                     </a>
 
@@ -689,11 +441,11 @@
                 <div class="footer-brand">
 
                     <a href="#" class="logo">
-                        <img src="{{ asset('assets/img/landing-page/osingguide-logo.svg') }}" alt="OsingGuide logo">
+                        <img src="{{ asset('storage/' . $about->logo) }}" alt="OsingGuide logo">
                     </a>
 
                     <p class="footer-text">
-                        OsingGuide is for you to make your travel more easier with our guide.
+                        {{ $about->description }}
                     </p>
 
                 </div>
@@ -711,19 +463,19 @@
                         <li class="contact-item">
                             <ion-icon name="call-outline"></ion-icon>
 
-                            <a href="tel:+6287864310772" class="contact-link">+6287864310772</a>
+                            <a href="tel:{{ $contact->no_telp }}" class="contact-link">{{ $contact->no_telp }}</a>
                         </li>
 
                         <li class="contact-item">
                             <ion-icon name="mail-outline"></ion-icon>
 
-                            <a href="mailto:osingguide@gmail.com" class="contact-link">osingguide@gmail.com</a>
+                            <a href="mailto:{{ $contact->email }}" class="contact-link">{{ $contact->email }}</a>
                         </li>
 
                         <li class="contact-item">
                             <ion-icon name="location-outline"></ion-icon>
 
-                            <address>Banyuwangi</address>
+                            <address>{{ $contact->address }}</address>
                         </li>
 
                     </ul>
