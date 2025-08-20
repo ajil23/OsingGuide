@@ -20,7 +20,7 @@
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         @if (session('success'))
-                            <div class="alert alert-success">{{ session('success') }}</div>
+                        <div class="alert alert-success">{{ session('success') }}</div>
                         @endif
                         <div class="table-responsive p-4">
                             <table class="table align-items-center mb-0">
@@ -55,10 +55,12 @@
                                             <p class="text-sm">{{ $place->location }}</p>
                                         </td>
                                         <td>
-                                            <p class="text-sm">{{ Str::limit(strip_tags($place->content), 25, '...') }}</p>
+                                            <p class="text-sm">{{ Str::limit(strip_tags($place->content), 25, '...') }}
+                                            </p>
                                         </td>
                                         <td>
-                                            <p class="text-sm">{{ $place->rating }} / 5 <i class="bi bi-star me-2"></i></p>
+                                            <p class="text-sm">{{ $place->rating }} / 5 <i class="bi bi-star me-2"></i>
+                                            </p>
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
@@ -85,25 +87,30 @@
                                     @endforelse
                                 </tbody>
                             </table>
+                            @forelse ($places as $place)
                             <div class="modal fade" id="placeDetailModal{{ $place->id }}" tabindex="-1"
                                 aria-labelledby="placeDetailLabel{{ $place->id }}" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="placeDetailLabel{{ $place->id }}">{{
-                                                $place->name_place }}</h5>
+                                            <h5 class="modal-title" id="placeDetailLabel{{ $place->id }}">
+                                                {{ $place->name_place }}
+                                            </h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
+                                            @if($place->image)
                                             <img src="{{ asset('storage/'.$place->image) }}" class="img-fluid mb-3"
                                                 alt="{{ $place->name_place }}">
+                                            @endif
                                             <div>
                                                 <p><strong>Content:</strong></p>
                                                 <p>{!! $place->content !!}</p>
                                             </div>
                                             <hr class="bg-primary">
-                                            <p><strong>Rating:</strong> {{ $place->rating }} / 5 <i class="bi bi-star me-2"></i></p>
+                                            <p><strong>Rating:</strong> {{ $place->rating }} / 5 <i
+                                                    class="bi bi-star me-2"></i></p>
                                             <p><strong>Location:</strong> {{ $place->location }}</p>
                                             <p><strong>Description:</strong> {{ $place->description }}</p>
                                             <p><strong>Keywords:</strong> {{ $place->keywords }}</p>
@@ -115,7 +122,9 @@
                                     </div>
                                 </div>
                             </div>
-
+                            @empty
+                            <p class="text-center text-muted"></p>
+                            @endforelse
                         </div>
                     </div>
                 </div>
