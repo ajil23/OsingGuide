@@ -30,4 +30,22 @@ class GuideController extends Controller
         $bookings = Booking::where('guide_id', auth()->id())->with('customer')->latest()->get();
         return view('guide.bookings.index', compact('bookings'));
     }
+
+    public function markAsCompleted(Request $request, $id)
+    {
+        $booking = Booking::where('id', $id)
+            ->where('guide_id', auth()->id())
+            ->whereIn('status', ['ongoing', 'confirmed'])
+            ->firstOrFail();
+
+        // Cek apakah end_time sudah lewat
+        if (now()->lt($booking->end_time)) {
+            return back()->with('error', 'Perjalanan belum selesai. Anda hanya bisa tandai selesai setelah waktu berakhir.');
+        }
+
+        $booking->status = 'completed';
+        $booking->save();
+
+        return back()->with('success', 'Status booking berhasil diubah menjadi Selesai.');
+    }
 }
