@@ -55,7 +55,7 @@
                 </a>
 
                 <a href="/" class="logo">
-                    <img src="{{ asset('assets/img/landing-page/osingguide-logo.svg') }}" alt="OsingGuide logo">
+                    <img src="{{ asset('assets/img/landing-page/osingguide-whitelogo.PNG') }}" alt="OsingGuide logo" width="100px">
                 </a>
 
                 <div class="header-btn-group">
