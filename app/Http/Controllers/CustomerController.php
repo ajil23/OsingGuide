@@ -23,13 +23,26 @@ class CustomerController extends Controller
         }
 
         // Filter tanggal
-        if ($request->date) {
-            $date = $request->date;
-            $query->whereDoesntHave('bookingsAsGuide', function ($q) use ($date) {
-                $q->where('status', '!=', 'cancelled')
-                    ->whereDate('start_time', '<=', $date)
-                    ->whereDate('end_time', '>=', $date);
-            });
+        if ($request->start_date && $request->end_date) {
+            $start = $request->start_date;
+            $end   = $request->end_date;
+
+            $query
+                ->whereHas('availabilities', function ($q) use ($start, $end) {
+                    $q->where('status', 'available')
+                        ->whereBetween('date', [$start, $end]);
+                })
+                ->whereDoesntHave('bookingsAsGuide', function ($q) use ($start, $end) {
+                    $q->where('status', '!=', 'cancelled')
+                        ->where(function ($q2) use ($start, $end) {
+                            $q2->whereBetween('start_time', [$start, $end])
+                                ->orWhereBetween('end_time', [$start, $end])
+                                ->orWhere(function ($q3) use ($start, $end) {
+                                    $q3->where('start_time', '<=', $start)
+                                        ->where('end_time', '>=', $end);
+                                });
+                        });
+                });
         }
 
         // Filter bahasa
