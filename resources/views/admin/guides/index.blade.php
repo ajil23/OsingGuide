@@ -39,18 +39,17 @@
                                                         method="POST" class="d-inline">
                                                         @csrf
                                                         @method('POST')
-                                                        <select name="level" onchange="this.form.submit()"
-                                                            class="form-select form-select-sm"
+                                                        <select name="level" onchange="this.form.submit()" class="form-select form-select-sm"
                                                             style="font-size: 0.875rem; padding: 0.25rem 0.5rem;">
-                                                            <option value="junior"
-                                                                {{ $guide->guideProfile->level == 'junior' ? 'selected' : '' }}>
-                                                                Junior</option>
-                                                            <option value="intermediate"
-                                                                {{ $guide->guideProfile->level == 'intermediate' ? 'selected' : '' }}>
-                                                                Intermediate</option>
-                                                            <option value="expert"
-                                                                {{ $guide->guideProfile->level == 'expert' ? 'selected' : '' }}>
-                                                                Expert</option>
+                                                            <option value="junior" {{ $guide->guideProfile?->level == 'junior' ? 'selected' : '' }}>
+                                                                Junior
+                                                            </option>
+                                                            <option value="intermediate" {{ $guide->guideProfile?->level == 'intermediate' ? 'selected' : '' }}>
+                                                                Intermediate
+                                                            </option>
+                                                            <option value="expert" {{ $guide->guideProfile?->level == 'expert' ? 'selected' : '' }}>
+                                                                Expert
+                                                            </option>
                                                         </select>
                                                     </form>
                                                 </td>
@@ -81,7 +80,7 @@
                                                             method="POST" class="d-inline">
                                                             @csrf
                                                             <button type="submit"
-                                                                class="btn btn-sm 
+                                                                class="btn btn-sm
                                                         {{ ($guide->guideProfile->status ?? 'inactive') === 'active' ? 'btn-warning' : 'btn-success' }}
                                                     ">
                                                                 {{ ($guide->guideProfile->status ?? 'inactive') === 'active' ? 'Nonaktifkan' : 'Aktifkan' }}
