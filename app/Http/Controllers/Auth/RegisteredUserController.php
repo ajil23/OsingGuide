@@ -51,7 +51,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect($this->redirectTo());
+        return redirect()->route('verification.notice');
     }
 
     protected function redirectTo(): string
