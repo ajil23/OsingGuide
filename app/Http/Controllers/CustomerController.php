@@ -14,16 +14,22 @@ class CustomerController extends Controller
     public function dashboard()
     {
         $bookings = auth()->user()->bookingsAsCustomer;
-        $contact = Contact::first();
+        // Ambil 3 tempat populer, bisa disesuaikan
         $places = Place::latest()->take(3)->get();
+        // Ambil 3 guide populer
         $guides = User::where('role', 'guide')
             ->whereHas('guideProfile') // hanya ambil yang punya profile
             ->with('guideProfile') // biar sekaligus load data profil\
             ->take(3)
             ->get();
+        // Gallery
         $galleries = Gallery::latest()->take(5)->get();
+        // About Us
         $about = AboutUs::first();
-        return view('landing.landing-page', compact('bookings', 'contact', 'places', 'guides', 'galleries', 'about'));
+        // Contact Us
+        $contact = Contact::first();
+
+        return view('landing.landing-page', compact('bookings', 'places', 'guides', 'galleries', 'about', 'contact'));
     }
 
     public function guides(Request $request)

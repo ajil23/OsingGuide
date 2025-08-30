@@ -21,7 +21,7 @@ Route::get('/', [LandingPageController::class, 'index'])->name('landing-page');
 Route::get('/list-guides', [CustomerController::class, 'guides'])->name('customer.list-guides');
 
 // Admin Dashboard
-Route::prefix('admin')->name('admin.')->middleware('auth', 'role:admin')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     // Booking Order
     Route::get('/bookings', [AdminController::class, 'bookings'])->name('bookings');
@@ -52,7 +52,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'role:admin')->group(
 });
 
 // Guide Dashboard
-Route::prefix('guide')->name('guide.')->middleware('auth', 'role:guide')->group(function () {
+Route::prefix('guide')->name('guide.')->middleware(['auth', 'verified', 'role:guide'])->group(function () {
     Route::get('/dashboard', [GuideController::class, 'dashboard'])->name('dashboard');
     Route::get('/bookings', [GuideController::class, 'bookings'])->name('bookings');
     Route::post('/bookings/{id}complete', [GuideController::class, 'markAsCompleted'])->name('booking.complete');
