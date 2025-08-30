@@ -548,22 +548,47 @@ body { background: var(--white); }
 
 /* Filter Atas */
 .top-filters {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap; /* Supaya tombol dan select bisa pindah baris di layar kecil */
+    gap: 10px; /* Jarak antar tombol/select */
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
-.filter-btn {
-  padding: 8px 16px;
-  background: #eee;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
+.top-filters .filter-btn {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
 }
 
-.filter-btn.active {
-  background: var(--primary);
-  color: white;
+.top-filters .filter-btn.active {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--secondary);
+}
+
+.top-filters select {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Media query untuk layar kecil */
+@media (max-width: 600px) {
+    .top-filters {
+        flex-direction: column; /* Pindah ke kolom di mobile */
+        align-items: stretch; /* Buat tombol/select full-width */
+    }
+
+    .top-filters .filter-btn,
+    .top-filters select {
+        width: 100%;
+    }
 }
 
 #price-sort {
@@ -572,18 +597,64 @@ body { background: var(--white); }
   border-radius: 5px;
 }
 
-.content-wrapper {
-  display: flex;
-  gap: 20px;
+/* Default sidebar (desktop) */
+.sidebar {
+    width: 250px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+    flex: 0 0 200px;
+    background: #fafafa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-family: sans-serif;
 }
 
-.sidebar {
-  flex: 0 0 200px;
-  background: #fafafa;
-  padding: 15px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  font-family: sans-serif;
+/* Mobile: sidebar jadi slide-in */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -500px; /* tersembunyi */
+        width: 280px;
+        height: 100%;
+        background: #fff;
+        overflow-y: auto;
+        transition: left 0.3s ease;
+        z-index: 1000;
+    }
+
+    .sidebar.active {
+        left: 0; /* muncul */
+    }
+
+    .open-sidebar-btn {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px 15px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .close-sidebar-btn {
+        background: none;
+        border: none;
+        font-size: 24px;
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        cursor: pointer;
+    }
+}
+
+/* Desktop: tombol open/close tidak perlu */
+@media (min-width: 769px) {
+    .open-sidebar-btn,
+    .close-sidebar-btn {
+        display: none;
+    }
 }
 
 .sidebar section {
@@ -730,7 +801,65 @@ body { background: var(--white); }
 }
 
 .sidebar .btn-apply-date:hover {
-  background-color: var(--secondary);
+    background-color: var(--secondary);
+}
+
+.sidebar .btn-reset-filters {
+    background-color: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar .btn-reset-filters:hover {
+    background-color: var(--secondary);
+}
+
+/*-----------------------------------*\
+ * #GUIDE-LIST PAGE
+\*-----------------------------------*/
+
+.guide-page {
+    display: flex;
+    gap: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px; /* desktop */
+}
+
+/* Main content */
+.guide-list-wrapper {
+    flex: 1;
+}
+
+/* Grid cards */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Media query untuk mobile */
+@media (max-width: 768px) {
+    .guide-page {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /*-----------------------------------*\
@@ -841,6 +970,28 @@ body { background: var(--white); }
   background: var(--primary);
   padding-block: var(--section-padding);
   background-image: url("../img/shapes/waves-white.svg");
+}
+
+.tour-search-form .input-select {
+  appearance: none; /* hilangkan default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: var(--white) url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='gray'%3E%3Cpath d='M4 6l4 4 4-4z'/%3E%3C/svg%3E") no-repeat right 12px center;
+  background-size: 16px;
+  border-radius: 50px; /* lebih kotak dari input biasa */
+  border: 1px solid #ddd;
+  cursor: pointer;
+  padding: 20px 40px;
+  font-size: var(--fs-5);
+  color: var(--spanish-gray);
+  text-transform: uppercase;
+}
+
+/* Saat focus */
+.tour-search-form .input-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
 }
 
 .tour-search-form .input-label {

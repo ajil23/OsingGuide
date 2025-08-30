@@ -48,7 +48,7 @@ class User extends Authenticatable
     public function reviewsReceived()
     {
         return $this->hasMany(Review::class, 'guide_id');
-    }   
+    }
 
     public function guideProfile()
     {
@@ -63,5 +63,10 @@ class User extends Authenticatable
     public function bookingsAsCustomer()
     {
         return $this->hasMany(Booking::class, 'customer_id');
+    }
+
+    public function availabilities()
+    {
+        return $this->hasMany(GuideAvailability::class, 'guide_id');
     }
 }

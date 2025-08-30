@@ -17,7 +17,7 @@
   -->
     <link rel="stylesheet" href="{{ asset('assets/css/landing-page.css') }}">
     <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <!--
     - google font link
@@ -201,7 +201,7 @@
                 <div class="swiper-button-prev"></div>
             </div> --}}
 
-                <!--
+            <!--
             - #List Guide
             -->
 
@@ -211,31 +211,38 @@
                     <h2 class="h2 section-title">List Guide</h2>
                     <p class="section-text">List of our guide in OsingGuide.</p>
 
-                    <!-- Filter Atas -->
+                    <!-- Top Filter -->
                     <div class="top-filters">
-                        <button class="filter-btn active" data-sort="all">All</button>
-                        <button class="filter-btn" data-sort="junior">Junior Guide</button>
-                        <button class="filter-btn" data-sort="intermediate">Intermediate Guide</button>
-                        <button class="filter-btn" data-sort="profesional">Profesional Guide</button>
+                        <button class="filter-btn {{ request('level')=='all' || !request('level') ? 'active':'' }}"
+                            data-sort="all">All</button>
+                        <button class="filter-btn {{ request('level')=='junior' ? 'active':'' }}" data-sort="junior">Junior Guide</button>
+                        <button class="filter-btn {{ request('level')=='intermediate' ? 'active':'' }}"
+                            data-sort="intermediate">Intermediate Guide</button>
+                        <button class="filter-btn {{ request('level')=='expert' ? 'active':'' }}" data-sort="expert">Expert Guide</button>
 
                         <select id="price-sort">
-                            <option value="">Urutkan Harga</option>
-                            <option value="low">Harga Terendah</option>
-                            <option value="high">Harga Tertinggi</option>
+                            <option value="">Sort by Price</option>
+                            <option value="low">Lowest Price</option>
+                            <option value="high">Highest Price</option>
                         </select>
                     </div>
 
-                    <div class="content-wrapper">
+                    <div class="guide-page">
+                        <!-- Tombol untuk membuka sidebar (tampil di mobile) -->
+                        <button class="open-sidebar-btn">☰ Filters</button>
+
                         <!-- Sidebar Filter -->
-                        <aside class="sidebar">
+                        <aside class="sidebar" id="sidebar">
+                            <button class="close-sidebar-btn">&times;</button> <!-- Tombol close -->
+
                             <section>
-                                <h3>Date Range</h3>
+                                <h3>Availbility Guides</h3>
                                 <div class="date-range">
                                     <label for="start-date">From</label>
-                                    <input type="date" id="start-date">
+                                    <input type="date" id="start-date" value="{{ request('start_date') }}">
 
                                     <label for="end-date">To</label>
-                                    <input type="date" id="end-date">
+                                    <input type="date" id="end-date" value="{{ request('end_date') }}">
 
                                     <button type="button" class="btn-apply-date" id="apply-date-btn">Apply Date</button>
                                 </div>
@@ -243,59 +250,71 @@
 
                             <section>
                                 <h3>Language</h3>
-                                <label><input type="checkbox" value="Indonesian" class="filter-language"><span class="checkmark"></span> Indonesian</label>
-                                <label><input type="checkbox" value="English" class="filter-language"><span class="checkmark"></span> English</label>
-                                <label><input type="checkbox" value="Mandarin" class="filter-language"><span class="checkmark"></span> Mandarin</label>
-                                <label><input type="checkbox" value="Japanese" class="filter-language"><span class="checkmark"></span> Japanese</label>
-                                <label><input type="checkbox" value="Korean" class="filter-language"><span class="checkmark"></span> Korean</label>
-                                <label><input type="checkbox" value="Arabic" class="filter-language"><span class="checkmark"></span> Arabic</label>
+                                @foreach(['Indonesia','English','Mandarin','Japanese','Korean','Arabic'] as $lang)
+                                <label>
+                                    <input type="checkbox" value="{{ $lang }}" class="filter-language" {{
+                                        in_array($lang,(array)request('languages')) ? 'checked' : '' }}>
+                                    <span class="checkmark"></span> {{ $lang }}
+                                </label>
+                                @endforeach
                             </section>
 
                             <section>
                                 <h3>Skills</h3>
-                                <label><input type="checkbox" value="Hiking" class="filter-skill"><span class="checkmark"></span> Hiking</label>
-                                <label><input type="checkbox" value="Photography" class="filter-skill"><span class="checkmark"></span> Photography</label>
-                                <label><input type="checkbox" value="Cultural Tour" class="filter-skill"><span class="checkmark"></span> Cultural Tour</label>
-                                <label><input type="checkbox" value="Food Tour" class="filter-skill"><span class="checkmark"></span> Food Tour</label>
-                                <label><input type="checkbox" value="City Walk" class="filter-skill"><span class="checkmark"></span> City Walk</label>
-                                <label><input type="checkbox" value="History" class="filter-skill"><span class="checkmark"></span> History</label>
-                                <label><input type="checkbox" value="Adventure" class="filter-skill"><span class="checkmark"></span> Adventure</label>
-                                <label><input type="checkbox" value="Family Tour" class="filter-skill"><span class="checkmark"></span> Family Tour</label>
+                                @foreach(['Hiking','Photography','Cultural Tour','Food Tour','City
+                                Walk','History','Adventure','Family Tour'] as $skill)
+                                <label>
+                                    <input type="checkbox" value="{{ $skill }}" class="filter-skill" {{ in_array($skill,(array)request('skills'))
+                                        ? 'checked' : '' }}>
+                                    <span class="checkmark"></span> {{ $skill }}
+                                </label>
+                                @endforeach
+                            </section>
+
+                            <section class="filter-reset">
+                                <button type="button" class="btn-reset-filters" id="reset-filters-btn">Reset All
+                                    Filters</button>
                             </section>
                         </aside>
 
+
                         <!-- Konten Card -->
-                        <div class="cards-grid" id="guide-list">
-                            @forelse($guides as $guide)
-                            <div class="popular-card" data-category="{{ strtolower($guide->guideProfile->level) }}"
-                                data-price="{{ $guide->guideProfile->daily_rate }}"
-                                data-language="{{ implode(',', $guide->guideProfile->languages) }}"
-                                data-skill="{{ implode(',', $guide->guideProfile->skills) }}" data-date="">
+                        <main class="guide-list-wrapper">
+                            <div class="cards-grid" id="guide-list">
+                                @forelse($guides as $guide)
+                                <div class="popular-card" data-category="{{ strtolower($guide->guideProfile->level) }}"
+                                    data-price="{{ $guide->guideProfile->daily_rate }}"
+                                    data-language="{{ implode(',', $guide->guideProfile->languages) }}"
+                                    data-skill="{{ implode(',', $guide->guideProfile->skills) }}"
+                                    data-availability='@json($guide->availabilities->where("status","available")->pluck("date")->map->format("Y-m-d"))'>
+                                    <figure class="card-img">
+                                        <img src="{{ $guide->guideProfile->photo ? asset('storage/'.$guide->guideProfile->photo) : asset('assets/img/team-1.jpg') }}"
+                                            alt="{{ $guide->name }}" loading="lazy">
+                                    </figure>
 
-                                <figure class="card-img">
-                                    <img src="{{ $guide->guideProfile->photo ? asset('storage/'.$guide->guideProfile->photo) : asset('assets/img/team-1.jpg') }}"
-                                        alt="{{ $guide->name }}" loading="lazy">
-                                </figure>
-
-                                <div class="card-content">
-                                    <div class="card-rating">
-                                        <span class="rating-text">{{ number_format($guide->guideProfile->rating ?? 0, 1) }}/5</span>
-                                        <ion-icon name="star"></ion-icon>
+                                    <div class="card-content">
+                                        <div class="card-rating">
+                                            <span class="rating-text">{{ number_format($guide->guideProfile->rating ??
+                                                0, 1)
+                                                }}/5</span>
+                                            <ion-icon name="star"></ion-icon>
+                                        </div>
+                                        <p class="card-subtitle">{{ ucfirst($guide->guideProfile->level) }}</p>
+                                        <h3 class="h3 card-title">{{ $guide->name }}</h3>
+                                        <p class="card-text">
+                                            Rp. {{ number_format($guide->guideProfile->daily_rate, 0, ',', '.') }} / per
+                                            day
+                                        </p>
+                                        <a href="{{ route('customer.booking.create', $guide->id) }}">
+                                            <button type="button" class="btn-book-now">Book Now</button>
+                                        </a>
                                     </div>
-                                    <p class="card-subtitle">{{ ucfirst($guide->guideProfile->level) }}</p>
-                                    <h3 class="h3 card-title">{{ $guide->name }}</h3>
-                                    <p class="card-text">
-                                        Rp. {{ number_format($guide->guideProfile->daily_rate, 0, ',', '.') }} / per day
-                                    </p>
-                                    <a href="{{ route('customer.booking.create', $guide->id) }}">
-                                        <button type="button" class="btn-book-now">Book Now</button>
-                                    </a>
                                 </div>
+                                @empty
+                                <p class="section-text">No guides available for your filters.</p>
+                                @endforelse
                             </div>
-                            @empty
-                            <p class="section-text">No guides available for your filters.</p>
-                            @endforelse
-                        </div>
+                        </main>
                     </div>
                 </div>
             </section>
@@ -314,11 +333,13 @@
 
                         <p class="section-text">
                             Don't worry, we offer free consultations!
-                            <br> Free consultations to help you decide where to go in Banyuwangi because Banyuwangi has so many cool tourist attractions.
+                            <br> Free consultations to help you decide where to go in Banyuwangi because Banyuwangi has
+                            so many cool tourist attractions.
                         </p>
                     </div>
 
-                    <a href="https://wa.me/6287864310772?text=Hallo%2C%20saya%20ingin%20konsultasi%20perjalanan%20wisata">
+                    <a
+                        href="https://wa.me/6287864310772?text=Hallo%2C%20saya%20ingin%20konsultasi%20perjalanan%20wisata">
                         <button class="btn btn-secondary">Get Free Consultation Now!</button>
                     </a>
 
@@ -458,80 +479,126 @@
         },
     });
     </script>
+    {{-- filter js --}}
+    <script>
+        const sidebar = document.getElementById("sidebar");
+        const openBtn = document.querySelector(".open-sidebar-btn");
+        const closeBtn = document.querySelector(".close-sidebar-btn");
+
+        openBtn.addEventListener("click", () => {
+            sidebar.classList.add("active");
+        });
+
+        closeBtn.addEventListener("click", () => {
+            sidebar.classList.remove("active");
+        });
+    </script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-    const cards = document.querySelectorAll(".popular-card");
-    const filterBtns = document.querySelectorAll(".filter-btn");
-    const priceSort = document.getElementById("price-sort");
-    const applyDateBtn = document.getElementById("apply-date-btn");
+            const cards = document.querySelectorAll(".popular-card");
+            const filterBtns = document.querySelectorAll(".filter-btn");
+            const priceSort = document.getElementById("price-sort");
+            const applyDateBtn = document.getElementById("apply-date-btn");
+            const resetBtn = document.getElementById("reset-filters-btn");
 
-    function applyFilters() {
-        const activeCategory = document.querySelector(".filter-btn.active").dataset.sort;
-        const selectedLanguages = Array.from(document.querySelectorAll(".filter-language:checked")).map(el => el.value);
-        const selectedSkills = Array.from(document.querySelectorAll(".filter-skill:checked")).map(el => el.value);
-        const startDate = document.getElementById("start-date").value;
-        const endDate = document.getElementById("end-date").value;
+            function applyFilters() {
+                const activeCategory = document.querySelector(".filter-btn.active")?.dataset.sort || "all";
+                const selectedLanguages = Array.from(document.querySelectorAll(".filter-language:checked")).map(el => el.value);
+                const selectedSkills = Array.from(document.querySelectorAll(".filter-skill:checked")).map(el => el.value);
+                const startDate = document.getElementById("start-date")?.value;
+                const endDate = document.getElementById("end-date")?.value;
 
-        cards.forEach(card => {
-            const category = card.dataset.category;
-            const price = parseInt(card.dataset.price);
-            const language = card.dataset.language;
-            const skill = card.dataset.skill;
-            const date = card.dataset.date;
+                cards.forEach(card => {
+                    const category = card.dataset.category;
+                    const price = parseInt(card.dataset.price);
+                    const languages = card.dataset.language ? card.dataset.language.split(",") : [];
+                    const skills = card.dataset.skill ? card.dataset.skill.split(",") : [];
+                    const availabilities = card.dataset.availability ? JSON.parse(card.dataset.availability) : [];
 
-            let visible = true;
+                    let visible = true;
 
-            // Filter kategori
-            if (activeCategory !== "all" && category !== activeCategory) {
-                visible = false;
+                    // Filter kategori
+                    if (activeCategory !== "all" && category !== activeCategory) visible = false;
+
+                    // Filter bahasa
+                    if (selectedLanguages.length) {
+                        const matchLanguage = selectedLanguages.some(lang => languages.includes(lang));
+                        if (!matchLanguage) visible = false;
+                    }
+
+                    // Filter skill
+                    if (selectedSkills.length) {
+                        const matchSkill = selectedSkills.some(skill => skills.includes(skill));
+                        if (!matchSkill) visible = false;
+                    }
+
+                    // Filter tanggal (availability)
+                    if (startDate || endDate) {
+                        let matchDate = false;
+                        if (availabilities.length) {
+                            matchDate = availabilities.some(date => {
+                                if (startDate && date < startDate) return false;
+                                if (endDate && date > endDate) return false;
+                                return true;
+                            });
+                        }
+                        if (!matchDate) visible = false;
+                    }
+
+                    card.style.display = visible ? "block" : "none";
+                });
+
+                // Sort harga
+                if (priceSort.value) {
+                    const sortedCards = Array.from(cards).sort((a, b) => {
+                        const priceA = parseInt(a.dataset.price);
+                        const priceB = parseInt(b.dataset.price);
+                        return priceSort.value === "low" ? priceA - priceB : priceB - priceA;
+                    });
+                    const container = document.getElementById("guide-list");
+                    container.innerHTML = "";
+                    sortedCards.forEach(card => container.appendChild(card));
+                }
             }
 
-            // Filter bahasa
-            if (selectedLanguages.length && !selectedLanguages.includes(language)) {
-                visible = false;
-            }
-
-            // Filter skill
-            if (selectedSkills.length && !selectedSkills.includes(skill)) {
-                visible = false;
-            }
-
-            // Filter date range
-            if (startDate && date < startDate) visible = false;
-            if (endDate && date > endDate) visible = false;
-
-            card.style.display = visible ? "block" : "none";
-        });
-
-        // Sort harga
-        if (priceSort.value) {
-            const sortedCards = Array.from(cards).sort((a, b) => {
-                const priceA = parseInt(a.dataset.price);
-                const priceB = parseInt(b.dataset.price);
-                return priceSort.value === "low" ? priceA - priceB : priceB - priceA;
+            // Event listeners
+            filterBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    filterBtns.forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    applyFilters();
+                });
             });
-            const container = document.getElementById("guide-list");
-            container.innerHTML = "";
-            sortedCards.forEach(card => container.appendChild(card));
-        }
-    }
 
-    filterBtns.forEach(btn => {
-        btn.addEventListener("click", () => {
-            filterBtns.forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            applyFilters();
+            document.querySelectorAll(".filter-language, .filter-skill").forEach(el => el.addEventListener("change", applyFilters));
+            priceSort.addEventListener("change", applyFilters);
+            applyDateBtn?.addEventListener("click", applyFilters);
+
+            // Reset All Filters
+            resetBtn?.addEventListener("click", () => {
+                // Reset kategori ke 'all'
+                filterBtns.forEach(btn => btn.classList.remove("active"));
+                const defaultBtn = document.querySelector(".filter-btn[data-sort='all']");
+                if (defaultBtn) defaultBtn.classList.add("active");
+
+                // Reset checkboxes
+                document.querySelectorAll(".filter-language, .filter-skill").forEach(el => el.checked = false);
+
+                // Reset tanggal
+                const startInput = document.getElementById("start-date");
+                const endInput = document.getElementById("end-date");
+                if (startInput) startInput.value = "";
+                if (endInput) endInput.value = "";
+
+                // Reset sort harga
+                if (priceSort) priceSort.value = "";
+
+                applyFilters();
+            });
+
+            applyFilters(); // apply default on load
         });
-    });
-
-    document.querySelectorAll(".filter-language, .filter-skill").forEach(el => {
-        el.addEventListener("change", applyFilters);
-    });
-
-    priceSort.addEventListener("change", applyFilters);
-
-    applyDateBtn.addEventListener("click", applyFilters);
-});
     </script>
 
     <!--

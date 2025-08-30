@@ -55,7 +55,7 @@
                 </a>
 
                 <a href="/" class="logo">
-                    <img src="{{ asset('assets/img/landing-page/osingguide-logo.svg') }}" alt="OsingGuide logo">
+                    <img src="{{ asset('assets/img/landing-page/osingguide-whitelogo.PNG') }}" alt="OsingGuide logo" width="100px">
                 </a>
 
                 <div class="header-btn-group">
@@ -202,21 +202,46 @@
 
             <section class="tour-search">
                 <div class="container">
-                    <h2 class="menu-title">Our Menu</h2>
-                    <div class="tour-menu">
-                        <a href="{{ route('customer.list-guides') }}" class="menu-item">
-                            <img src="{{ asset('assets/img/landing-page/guide-icon.svg') }}" alt="Booking Guide">
-                            <h3>Booking Guide</h3>
-                        </a>
-                        <a href="#transportation" class="menu-item">
-                            <img src="{{ asset('assets/img/landing-page/transportation-icon.svg') }}" alt="Transportation">
-                            <h3>Transportation</h3>
-                        </a>
-                        <a href="#accommodation" class="menu-item">
-                            <img src="{{ asset('assets/img/landing-page/accomodation-icon.svg') }}" alt="Accommodation">
-                            <h3>Accommodation</h3>
-                        </a>
-                    </div>
+                    <form action="{{ route('customer.list-guides') }}" method="GET" class="tour-search-form">
+
+                        <div class="input-wrapper">
+                            <label for="level" class="input-label">Level Guides*</label>
+                            <select name="level" id="level" class="input-select">
+                                <option value="" selected hidden>--Select Level--</option>
+                                <option value="junior" {{ request('level')=='junior' ?'selected':'' }}>Junior</option>
+                                <option value="intermediate" {{ request('level')=='intermediate' ?'selected':'' }}>Intermediate
+                                </option>
+                                <option value="expert" {{ request('level')=='expert' ?'selected':'' }}>Expert</option>
+                            </select>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <label for="skill" class="input-label">Skills*</label>
+                            <select name="skills[]" id="skill" class="input-select">
+                                <option value="" selected hidden>-- Select Skill--</option>
+                                @foreach(['Hiking','Photography','Cultural Tour','Food Tour','City
+                                Walk','History','Adventure','Family Tour'] as $skill)
+                                <option value="{{ $skill }}" {{ in_array($skill,(array)request('skills'))?'selected':'' }}>
+                                    {{ $skill }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <label for="start-date" class="input-label">Start Tour*</label>
+                            <input type="date" name="start_date" id="start-date" value="{{ request('start_date') }}" required
+                                class="input-field">
+                        </div>
+
+                        <div class="input-wrapper">
+                            <label for="end-date" class="input-label">End Tour*</label>
+                            <input type="date" name="end_date" id="end-date" value="{{ request('end_date') }}" required
+                                class="input-field">
+                        </div>
+
+                        <button type="submit" class="btn btn-secondary">Search Guides</button>
+                    </form>
                 </div>
             </section>
 
