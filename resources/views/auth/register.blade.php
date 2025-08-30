@@ -9,6 +9,8 @@
 
     <!-- Fonts and icons -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/img/landing-page/osing-guide.svg') }}">
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/landing-page/osing-guide.svg') }}">
     <!-- Nucleo Icons -->
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
@@ -61,7 +63,7 @@
                                         class="form-control @error('name') is-invalid @enderror" placeholder="Name"
                                         required autofocus>
                                     @error('name')
-                                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
+                                        <div class="text-danger text-sm mt-1">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -71,37 +73,47 @@
                                         class="form-control @error('email') is-invalid @enderror" placeholder="Email"
                                         required>
                                     @error('email')
-                                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
+                                        <div class="text-danger text-sm mt-1">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 {{-- Phone --}}
                                 <div class="mb-3 d-flex">
                                     <select name="country_code" class="form-select w-25 me-2" required>
-                                        <option value="+62" {{ old('country_code')=='+62' ? 'selected' : '' }}>🇮🇩 +62
+                                        <option value="+62" {{ old('country_code') == '+62' ? 'selected' : '' }}>🇮🇩
+                                            +62
                                             (Indonesia)</option>
-                                        <option value="+60" {{ old('country_code')=='+60' ? 'selected' : '' }}>🇲🇾 +60
+                                        <option value="+60" {{ old('country_code') == '+60' ? 'selected' : '' }}>🇲🇾
+                                            +60
                                             (Malaysia)</option>
-                                        <option value="+65" {{ old('country_code')=='+65' ? 'selected' : '' }}>🇸🇬 +65
+                                        <option value="+65" {{ old('country_code') == '+65' ? 'selected' : '' }}>🇸🇬
+                                            +65
                                             (Singapore)</option>
-                                        <option value="+1" {{ old('country_code')=='+1' ? 'selected' : '' }}>🇺🇸 +1
+                                        <option value="+1" {{ old('country_code') == '+1' ? 'selected' : '' }}>🇺🇸
+                                            +1
                                             (USA)</option>
-                                        <option value="+81" {{ old('country_code')=='+81' ? 'selected' : '' }}>🇯🇵 +81
+                                        <option value="+81" {{ old('country_code') == '+81' ? 'selected' : '' }}>🇯🇵
+                                            +81
                                             (Japan)</option>
-                                        <option value="+91" {{ old('country_code')=='+91' ? 'selected' : '' }}>🇮🇳 +91
+                                        <option value="+91" {{ old('country_code') == '+91' ? 'selected' : '' }}>🇮🇳
+                                            +91
                                             (India)</option>
-                                        <option value="+44" {{ old('country_code')=='+44' ? 'selected' : '' }}>🇬🇧 +44
+                                        <option value="+44" {{ old('country_code') == '+44' ? 'selected' : '' }}>🇬🇧
+                                            +44
                                             (UK)</option>
-                                        <option value="+49" {{ old('country_code')=='+49' ? 'selected' : '' }}>🇩🇪 +49
+                                        <option value="+49" {{ old('country_code') == '+49' ? 'selected' : '' }}>🇩🇪
+                                            +49
                                             (Germany)</option>
                                         <!-- tambahkan sesuai kebutuhan -->
                                     </select>
 
-                                    <input type="number" id="phone_number" name="phone_number" value="{{ old('phone_number') }}"
-                                        class="form-control @error('phone_number') is-invalid @enderror" placeholder="8123456789" required>
+                                    <input type="number" id="phone_number" name="phone_number"
+                                        value="{{ old('phone_number') }}"
+                                        class="form-control @error('phone_number') is-invalid @enderror"
+                                        placeholder="8123456789" required>
 
                                     @error('phone_number')
-                                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
+                                        <div class="text-danger text-sm mt-1">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 {{-- Password --}}
@@ -110,7 +122,7 @@
                                         class="form-control @error('password') is-invalid @enderror"
                                         placeholder="Password" required>
                                     @error('password')
-                                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
+                                        <div class="text-danger text-sm mt-1">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -125,15 +137,15 @@
                                     <select name="role" class="form-control @error('role') is-invalid @enderror"
                                         required>
                                         <option value="">-- Select Role --</option>
-                                        <option value="customer" {{ old('role')=='customer' ? 'selected' : '' }}>
+                                        <option value="customer" {{ old('role') == 'customer' ? 'selected' : '' }}>
                                             Customer</option>
-                                        <option value="guide" {{ old('role')=='guide' ? 'selected' : '' }}>Guide
+                                        <option value="guide" {{ old('role') == 'guide' ? 'selected' : '' }}>Guide
                                         </option>
-                                        <option value="admin" {{ old('role')=='admin' ? 'selected' : '' }}>Admin
+                                        <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin
                                         </option>
                                     </select>
                                     @error('role')
-                                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
+                                        <div class="text-danger text-sm mt-1">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -147,7 +159,8 @@
                                 </div>
 
                                 <div class="text-center">
-                                    <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>
+                                    <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign
+                                        up</button>
                                 </div>
                                 <p class="text-sm mt-3 mb-0">Already have an account?
                                     <a href="{{ route('login') }}" class="text-dark font-weight-bolder">Sign in</a>
@@ -160,19 +173,20 @@
         </div>
     </main>
 
-   <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
-    <scrip src="{{ asset('assets/js/argon-dashboard.min.js') }}"></script>
-    <script>
-    document.getElementById('phone_number').addEventListener('input', function (e) {
-        let val = e.target.value;
-        if (val.startsWith('0')) {
-            e.target.value = val.replace(/^0+/, ''); // hapus semua 0 di depan
-        }
-    });
-    </script>
+    <scrip src="{{ asset('assets/js/argon-dashboard.min.js') }}">
+        </script>
+        <script>
+            document.getElementById('phone_number').addEventListener('input', function(e) {
+                let val = e.target.value;
+                if (val.startsWith('0')) {
+                    e.target.value = val.replace(/^0+/, ''); // hapus semua 0 di depan
+                }
+            });
+        </script>
 </body>
 
 </html>
