@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AboutUs;
+use App\Models\Contact;
+use App\Models\Gallery;
+use App\Models\Place;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -10,7 +14,16 @@ class CustomerController extends Controller
     public function dashboard()
     {
         $bookings = auth()->user()->bookingsAsCustomer;
-        return view('landing.landing-page', compact('bookings'));
+        $contact = Contact::first();
+        $places = Place::latest()->take(3)->get();
+        $guides = User::where('role', 'guide')
+            ->whereHas('guideProfile') // hanya ambil yang punya profile
+            ->with('guideProfile') // biar sekaligus load data profil\
+            ->take(3)
+            ->get();
+        $galleries = Gallery::latest()->take(5)->get();
+        $about = AboutUs::first();
+        return view('landing.landing-page', compact('bookings', 'contact', 'places', 'guides', 'galleries', 'about'));
     }
 
     public function guides(Request $request)

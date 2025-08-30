@@ -10,7 +10,7 @@
     <!--
     - favicon
   -->
-    <link rel="shortcut icon" href="{{ asset('assets/img/landing-page/osingguide-logo.svg') }}" type="image/svg+xml">
+    <link rel="shortcut icon" href="{{ asset('assets/img/landing-page/osing-guide.svg') }}" type="image/svg+xml">
 
     <!--
     - custom css link
