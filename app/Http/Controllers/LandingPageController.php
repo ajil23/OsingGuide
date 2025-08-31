@@ -28,6 +28,6 @@ class LandingPageController extends Controller
         // Contact Us
         $contact = Contact::first();
 
-        return view('landing.landing-page', compact('places', 'guides', 'galleries', 'about', 'contact'));
+        return view('front.landing-page', compact('places', 'guides', 'galleries', 'about', 'contact'));
     }
 }
