@@ -489,7 +489,7 @@ body { background: var(--white); }
 \*-----------------------------------*/
 
 .hero {
-  background-image: url("../img/landing-page/ijen-photo.jpeg");
+  background-image: url("../img/landing-page/banner.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -588,6 +588,14 @@ body { background: var(--white); }
     .top-filters .filter-btn,
     .top-filters select {
         width: 100%;
+    }
+    .header-top {
+        padding-block: 2px !important;
+    }
+
+    .input-select{
+        padding-top: 15px !important;
+        padding-bottom: 15px !important;
     }
 }
 
