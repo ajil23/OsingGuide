@@ -305,8 +305,8 @@
                                             Rp. {{ number_format($guide->guideProfile->daily_rate, 0, ',', '.') }} / per
                                             day
                                         </p>
-                                        <a href="{{ route('customer.booking.create', $guide->id) }}">
-                                            <button type="button" class="btn-book-now">Book Now</button>
+                                        <a href="{{ route('customer.show', $guide->id) }}">
+                                            <button type="button" class="btn-book-now">Lihat Detail</button>
                                         </a>
                                     </div>
                                 </div>
