@@ -23,6 +23,16 @@ class RegisteredUserController extends Controller
         return view('auth.register');
     }
 
+    public function showGuideRegisterForm()
+    {
+        return view('auth.register_guide');
+    }
+
+    public function showAdminRegisterForm()
+    {
+        return view('auth.register_admin');
+    }
+
     /**
      * Handle an incoming registration request.
      *
@@ -52,17 +62,5 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect()->route('verification.notice');
-    }
-
-    protected function redirectTo(): string
-    {
-        $role = auth()->user()->role;
-
-        return match ($role) {
-            'admin' => '/admin/dashboard',
-            'guide' => '/guide/dashboard',
-            'customer' => '/customer/dashboard',
-            default => '/',
-        };
     }
 }

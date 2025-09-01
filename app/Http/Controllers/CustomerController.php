@@ -104,4 +104,98 @@ class CustomerController extends Controller
 
         return view('landing.detail-guide', compact('guide'));
     }
+
+    public function places(Request $request)
+    {
+        $query = Place::query();
+
+        // Filter by rating
+        if ($request->rating) {
+            $query->where('rating', '>=', $request->rating);
+        }
+
+        // Search by name or location
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('name_place', 'like', '%' . $request->search . '%')
+                  ->orWhere('location', 'like', '%' . $request->search . '%')
+                  ->orWhere('description', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Sort by rating
+        if ($request->sort_rating == 'high') {
+            $query->orderBy('rating', 'desc');
+        } elseif ($request->sort_rating == 'low') {
+            $query->orderBy('rating', 'asc');
+        } else {
+            $query->latest();
+        }
+
+        $places = $query->get();
+
+        return view('landing.place-list', compact('places'));
+    }
+
+    public function gallery()
+    {
+        $galleries = Gallery::latest()->get();
+
+        return view('landing.gallery-list', compact('galleries'));
+    }
+
+    public function placeDetail($id)
+    {
+        $place = Place::findOrFail($id);
+
+        return view('landing.detail-place', compact('place'));
+    }
+
+    public function profile()
+    {
+        $user = auth()->user();
+        return view('landing.customer-profile', compact('user'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'country_code' => 'required|string',
+            'phone_number' => 'required|numeric|min:8',
+        ]);
+
+        // Combine country code and phone number
+        $phone = $request->country_code . $request->phone_number;
+
+        $user->update([
+            'name' => $request->name,
+            'phone' => $phone,
+        ]);
+
+        return back()->with('success', 'Profile berhasil diperbarui!');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'current_password' => 'required|current_password',
+            'new_password' => 'required|string|min:8|confirmed',
+            'new_password_confirmation' => 'required',
+        ], [
+            'current_password.current_password' => 'Password saat ini tidak sesuai.',
+            'new_password.min' => 'Password baru minimal 8 karakter.',
+            'new_password.confirmed' => 'Konfirmasi password tidak sesuai.',
+        ]);
+
+        $user->update([
+            'password' => bcrypt($request->new_password),
+        ]);
+
+        return back()->with('success', 'Password berhasil diperbarui!');
+    }
 }

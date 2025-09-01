@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Verification Email')
+@section('title', 'Osing Guide | Verification Email')
 @section('main')
 <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg"
     style="background-image: url('{{ asset('assets/img/landing-page/ijen-photo.jpeg') }}'); background-position: top;">
@@ -24,23 +24,22 @@
                     </div>
                     @if (session('status') == 'verification-link-sent')
                     <div class="alert alert-success">
-                        Link verifikasi baru sudah dikirim ke email Anda.
+                        A new verification link has been sent to your email.
                     </div>
                     @endif
                     <div class="text-center text-muted mb-1">
-                        <h5>Terima kasih sudah mendaftar. Sebelum melanjutkan, silakan verifikasi alamat email Anda
-                            dengan mengklik link yang kami kirimkan ke email.</h5>
+                        <h5>Thank you for registering. Before continuing, please verify your email address by clicking the link we sent to your email.</h5>
                     </div>
                     <div class="text-center">
                         <form method="POST" action="{{ route('verification.send') }}">
                             @csrf
-                            <button type="button" class="btn btn-primary w-100 mt-2 mb-0">
-                                Kirim Ulang Email Verifikasi
+                            <button type="submit" class="btn btn-primary w-100 mt-2 mb-0">
+                                Resend Verification Email
                             </button>
                         </form>
                         <form method="POST" action="{{ route('logout') }}" class="mt-3">
                             @csrf
-                            <button type="submit" class="btn btn-danger w-100 mt-2 mb-0">
+                            <button type="submit" class="btn btn-danger w-50 mt-2 mb-0">
                                 Logout
                             </button>
                         </form>

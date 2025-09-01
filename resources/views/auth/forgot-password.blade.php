@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Forgot Password')
+@section('title', 'Osing Guide | Forgot Password')
 @section('main')
 <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg"
     style="background-image: url('{{ asset('assets/img/landing-page/ijen-photo.jpeg') }}'); background-position: top;">
@@ -21,7 +21,7 @@
                 <div class="card-header">
                     <div class="d-flex">
                         <div class="icon icon-shape bg-primary shadow text-center border-radius-md">
-                            <i class="ni ni-circle-08 text-white text-lg opacity-10" aria-hidden="true"></i>
+                            <i class="bi bi-person-circle text-white text-lg opacity-10" aria-hidden="true"></i>
                         </div>
                         <div class="ms-3">
                             <h5 class="mb-0">Can't log in?</h5>
@@ -44,7 +44,9 @@
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary w-100 mt-4 mb-0">Email Password Reset
                                 Link</button>
-                            <p class="text-sm mt-3 cursor-pointer mb-0">I don't have access to my Email</p>
+                            <p class="text-sm mt-3 mb-0">remember your account?
+                                <a href="{{ route('login') }}" class="text-dark font-weight-bolder">Let's Sign in</a>
+                            </p>
                         </div>
                     </form>
                 </div>

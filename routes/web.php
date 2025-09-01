@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Route;
 // Landing Page
 Route::get('/', [LandingPageController::class, 'index'])->name('landing-page');
 Route::get('/list-guides', [CustomerController::class, 'guides'])->name('customer.list-guides');
+Route::get('/list-places', [CustomerController::class, 'places'])->name('customer.list-places');
+Route::get('/place/{id}', [CustomerController::class, 'placeDetail'])->name('customer.place-detail');
+Route::get('/list-gallery', [CustomerController::class, 'gallery'])->name('customer.list-gallery');
 
 // Admin Dashboard
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
@@ -58,6 +61,7 @@ Route::prefix('guide')->name('guide.')->middleware(['auth', 'verified', 'role:gu
     Route::post('/bookings/{id}complete', [GuideController::class, 'markAsCompleted'])->name('booking.complete');
     Route::get('/profile/edit', [GuideProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [GuideProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/update-password', [GuideProfileController::class, 'updatePassword'])->name('profile.updatePassword');
     Route::get('/availability', [GuideAvailabilityController::class, 'index'])->name('availability');
     Route::post('/availability', [GuideAvailabilityController::class, 'store'])->name('availability.store');
     Route::post('/availability/bulk', [GuideAvailabilityController::class, 'storeBulk'])->name('availability.bulk');
@@ -68,6 +72,9 @@ Route::prefix('guide')->name('guide.')->middleware(['auth', 'verified', 'role:gu
 // Customer
 Route::prefix('customer')->name('customer.')->group(function () {
     Route::get('/dashboard', [CustomerController::class, 'dashboard'])->name('dashboard');
+    Route::get('/profile', [CustomerController::class, 'profile'])->middleware(['auth', 'role:customer'])->name('profile');
+    Route::post('/profile/update', [CustomerController::class, 'updateProfile'])->middleware(['auth', 'role:customer'])->name('profile.update');
+    Route::post('/profile/update-password', [CustomerController::class, 'updatePassword'])->middleware(['auth', 'role:customer'])->name('profile.updatePassword');
     Route::get('/detail/{id}', [CustomerController::class, 'show'])->name('show');
     Route::get('/bookings', [BookingController::class, 'bookings'])->name('bookings');
     Route::get('/bookings/create/{guideId}', [BookingController::class, 'create'])->middleware(['auth', 'role:customer'])->name('booking.create');

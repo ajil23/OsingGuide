@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OsingGuide - Make Your Trip Easier</title>
+    <title>OsingGuide | Make Your Trip Easier</title>
 
     <!--
     - favicon
@@ -25,6 +25,21 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
         rel="stylesheet">
+    <style>
+        .profile-avatar-small {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(87deg, #5e72e4 0, #825ee4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            margin-right: 8px;
+        }
+    </style>
 </head>
 
 <body id="top">
@@ -150,12 +165,14 @@
                     @auth
                     <div class="profile-dropdown">
                         <button class="profile-btn">
-                            <img src="{{ asset('assets/img/team-1.jpg') }}" alt="Avatar">
+                            <div class="profile-avatar-small">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 1) . substr(strrchr(Auth::user()->name, ' '), 1, 1)) }}
+                            </div>
                             <span class="profile-name">{{ Auth::user()->name }}</span>
                             <i class="arrow-down"></i>
                         </button>
                         <div class="dropdown-content">
-                            <a href="#">My Profile</a>
+                            <a href="{{ route('customer.profile') }}">My Profile</a>
                             <a href="{{ route('customer.bookings') }}">Booking History</a>
                             <hr>
                             <form action="{{ route('logout') }}" method="POST">
@@ -300,7 +317,7 @@
                         @endforeach
                     </ul>
 
-                    <a href="#">
+                    <a href="{{ route('customer.list-places') }}">
                         <button class="btn btn-primary">More Place Destination</button>
                     </a>
 
@@ -371,12 +388,18 @@
                                     </div>
 
                                     <p class="price">
-                                        Rp. {{ number_format($guide->guideProfile->daily_rate, 0, ',', '.') }}
+                                        @php
+                                        $dailyRate = $guide->guideProfile->daily_rate;
+                                        $platformFeePercentage = \App\Models\Setting::getValue('platform_fee_value') ?? 15;
+                                        $platformFee = ($dailyRate * $platformFeePercentage) / 100;
+                                        $totalDailyRate = $dailyRate + $platformFee;
+                                        @endphp
+                                        Rp. {{ number_format($totalDailyRate, 0, ',', '.') }}
                                         <span>/ per day</span>
                                     </p>
 
-                                    <a href="{{ route('customer.booking.create', $guide->id) }}">
-                                        <button class="btn btn-secondary">Book Now</button>
+                                    <a href="{{ route('customer.show', $guide->id) }}">
+                                        <button class="btn btn-secondary">Detail Guide</button>
                                     </a>
 
                                 </div>
@@ -419,7 +442,7 @@
 
                     </ul>
 
-                    <a href="#">
+                    <a href="{{ route('customer.list-gallery') }}">
                         <button class="btn btn-primary">More Photo's</button>
                     </a>
 

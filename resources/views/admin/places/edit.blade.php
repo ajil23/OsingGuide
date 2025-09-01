@@ -13,26 +13,31 @@
                             @csrf
                             @method('PUT')
                             <input class="form-control" name="id" type="number" value="{{ $place->id }}" hidden>
-                            <div class="mb-3">
-                                <label>Image</label>
-                                <input type="file" name="image" class="form-control">
-                                <p>Photos: <img src="{{ asset('storage/'.$place->image) }}" width="100" class="mt-3"></p>
+                            <div class="row">
+                                <div class="mb-3 col-md-6">
+                                    <label>Name of Place</label>
+                                    <input type="text" name="name_place" class="form-control" value="{{ old('name_place', $place->name_place) }}">
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label>Image <i
+                                        class="bi bi-file-image text-danger" title="Photo Maksimum 2 MB">(Maks. 2 MB)</i></label>
+                                    <input type="file" name="image" class="form-control">
+                                    <p>Photos: <img src="{{ asset('storage/'.$place->image) }}" width="100" class="mt-3"></p>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label>Name of Place</label>
-                                <input type="text" name="name_place" class="form-control" value="{{ old('name_place', $place->name_place) }}">
-                            </div>
-                            <div class="mb-3">
-                                <label>Location</label>
-                                <input type="text" name="location" class="form-control" value="{{ old('location', $place->location) }}">
+                            <div class="row">
+                                <div class="mb-3 col-md-6">
+                                    <label>Location</label>
+                                    <input type="text" name="location" class="form-control" value="{{ old('name_place', $place->location) }}">
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label>Rating (1-5)</label>
+                                    <input type="number" name="rating" class="form-control" min="1" max="5" value="{{ old('name_place', $place->rating) }}">
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label>Content</label>
-                                <textarea name="content" class="form-control">{{ old('content', $place->content) }}</textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label>Rating</label>
-                                <input type="number" min="1" max="5" name="rating" class="form-control" value="{{ old('rating', $place->rating) }}">
+                                <textarea name="content" class="form-control" rows="5">{{ old('content', $place->content) }}</textarea>
                             </div>
                             <div class="mb-3">
                                 <label>Description (SEO)</label>

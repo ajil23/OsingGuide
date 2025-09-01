@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\RedirectHelper;
 use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
@@ -21,22 +22,11 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect($this->redirectTo());
+                $user = Auth::guard($guard)->user();
+                return RedirectHelper::redirectByRole($user);
             }
         }
 
         return $next($request);
-    }
-
-    protected function redirectTo(): string
-    {
-        $role = auth()->user()->role;
-
-        return match ($role) {
-            'admin' => '/admin/dashboard',
-            'guide' => '/guide/dashboard',
-            'customer' => '/customer/dashboard',
-            default => '/',
-        };
     }
 }

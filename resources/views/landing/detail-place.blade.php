@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OsingGuide - Detail Guide</title>
+    <title>OsingGuide - Detail Place</title>
 
     <!--
     - favicon
@@ -27,105 +27,77 @@
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <style>
-        /* === DETAIL WRAPPER === */
-        .detail-wrapper {
-            display: flex;
-            gap: 2rem;
-            align-items: stretch;
-            /* 🔥 tinggi anak otomatis sama */
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-        }
-
-        /* === FOTO GUIDE === */
-        .guide-photo {
-            flex: 1 1 300px;
-            max-width: 400px;
-            aspect-ratio: 1 / 1;
-            /* bisa diganti 1 / 1 kalau mau kotak */
+        /* === PLACE PHOTO === */
+        .place-photo {
+            width: 100%;
+            max-width: 100%;
+            height: 500px;
             overflow: hidden;
             border-radius: 16px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
         }
 
-        .guide-photo img {
+        .place-photo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
 
-        /* === INFO GUIDE === */
-        .guide-info {
-            flex: 2 1 300px;
+        /* === PLACE HEADER === */
+        .place-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .place-name-rating {
             display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            padding: 0.8rem 1rem;
-            min-height: 100%;
-            /* 🔥 selalu ikut tinggi parent */
-            box-sizing: border-box;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
         }
 
-        /* === HEADER INFO === */
-        .guide-header {
-            margin-bottom: 0.3rem;
-        }
-
-        .guide-name {
-            font-size: 2rem;
+        .place-name {
+            font-size: 2.5rem;
             font-weight: 700;
             margin: 0;
             color: #222;
         }
 
-        .guide-level {
-            font-size: 1.2rem;
-            color: #666;
-            margin: 0.2rem 0 0;
-        }
-
-        /* === RATING & PRICE === */
         .rating {
             display: flex;
             align-items: center;
             gap: .4rem;
             font-weight: 600;
             color: #444;
+            font-size: 1.2rem;
         }
 
         .star-icon {
             color: #f5c518;
-            font-size: 1.2rem;
-        }
-
-        .guide-price {
             font-size: 1.5rem;
-            font-weight: 600;
-            color: #222;
         }
 
-        .guide-price span {
-            font-size: .9rem;
-            color: #777;
+        .place-location {
+            font-size: 1.3rem;
+            color: #666;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        /* === BUTTON === */
-        .book-btn {
-            display: inline-block;
-            background: #2a7f46;
-            color: #fff;
-            text-align: center;
-            padding: 0.8rem 1.2rem;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: 0.3s ease;
-            margin-top: auto;
-            /* 🔥 dorong ke bawah biar rapih */
+        .location-icon {
+            color: var(--primary);
+            font-size: 1.3rem;
         }
 
-        .book-btn:hover {
-            background: #256d3d;
+        /* === PLACE DESCRIPTION === */
+        .place-description {
+            line-height: 1.8;
+            color: #555;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
         }
 
         /* === SECTION UMUM === */
@@ -147,20 +119,6 @@
             font-size: .9rem;
         }
 
-        .availability-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: .5rem;
-        }
-
-        .avail-date {
-            background: #e8f7ef;
-            color: #2a7f46;
-            padding: .4rem .8rem;
-            border-radius: 8px;
-            font-size: .9rem;
-        }
-
         .h4, .h5 {
             font-weight: var(--fw-800);
             font-family: var(--ff-montserrat);
@@ -169,22 +127,26 @@
 
         /* === RESPONSIVE === */
         @media (max-width: 768px) {
-            .detail-wrapper {
+            .place-photo {
+                height: 300px;
+            }
+
+            .place-name-rating {
                 flex-direction: column;
                 align-items: flex-start;
+                gap: 1rem;
             }
 
-            .guide-photo,
-            .guide-info {
-                max-width: 100%;
-                width: 100%;
-                min-height: auto;
+            .place-name {
+                font-size: 2rem;
             }
 
-            .guide-info {
-                padding: 1rem;
-                /* 🔥 kasih ruang biar isi nggak nempel ke pinggir */
-                box-sizing: border-box;
+            .place-location {
+                font-size: 1.1rem;
+            }
+
+            .place-description {
+                font-size: 1rem;
             }
         }
     </style>
@@ -214,97 +176,64 @@
 
     <main>
         <article>
-            <section class="guide-detail">
-                <div class="container">
-                    <h2 class="h2 section-title">Detail Guide</h2>
-                    <p class="section-text">Discover more about this professional guide and their expertise.</p>
+            <section class="place-detail">
+                <div class="container" style="margin-top: 80px">
+                    <h2 class="h2 section-title">Detail Place</h2>
+                    <p class="section-text">Discover more about this amazing tourist destination.</p>
 
-                    <!-- Wrapper Flex -->
-                    <div class="detail-wrapper">
-
-                        <!-- Foto Profil Guide -->
-                        <div class="guide-photo">
-                            <img src="{{ $guide->guideProfile->photo ? asset('storage/' . $guide->guideProfile->photo) : asset('assets/img/team-1.jpg') }}"
-                                alt="{{ $guide->name }}">
-                        </div>
-
-                        <!-- Informasi Utama -->
-                        <div class="guide-info">
-
-                            <!-- Nama & Level -->
-                            <div class="guide-header">
-                                <h2 class="guide-name">{{ $guide->name }}</h2>
-                                <p class="guide-level">{{ ucfirst($guide->guideProfile->level) }} Guide</p>
-                            </div>
-
-                            <!-- Rating -->
-                            <div class="rating">
-                                <ion-icon name="star" class="star-icon"></ion-icon>
-                                <span>{{ number_format($guide->guideProfile->rating ?? 0, 1) }}/5</span>
-                            </div>
-
-                            <!-- Harga -->
-                            <div class="guide-price">
-                                @php
-                                $dailyRate = $guide->guideProfile->daily_rate;
-                                $platformFeePercentage = \App\Models\Setting::getValue('platform_fee_value') ?? 15;
-                                $platformFee = ($dailyRate * $platformFeePercentage) / 100;
-                                $totalDailyRate = $dailyRate + $platformFee;
-                                @endphp
-                                Rp. {{ number_format($totalDailyRate, 0, ',', '.') }} <span>/day</span>
-                            </div>
-
-                            <!-- Tombol -->
-                            <a href="{{ route('customer.booking.create', $guide->id) }}" class="book-btn">
-                                Book Now
-                            </a>
-                        </div>
+                    <!-- Foto Place Full Width -->
+                    <div class="place-photo">
+                        <img src="{{ $place->image ? asset('storage/' . $place->image) : asset('assets/img/landing-page/ijen-photo.jpeg') }}"
+                            alt="{{ $place->name_place }}">
                     </div>
 
+                    <!-- Nama Tempat - Rating -->
+                    <div class="place-header">
+                        <div class="place-name-rating">
+                            <h2 class="place-name">{{ $place->name_place }}</h2>
+                            <div class="rating">
+                                <ion-icon name="star" class="star-icon"></ion-icon>
+                                <span>{{ number_format($place->rating, 1) }}/5</span>
+                            </div>
+                        </div>
 
-                    <!-- Deskripsi -->
-                    <div class="detail-section">
-                        <h4 class="h4">About {{ $guide->name }}</h4>
-                        <p class="tags">
-                            {{ $guide->guideProfile->bio ?? 'No description available.' }}
+                        <!-- Lokasi -->
+                        <p class="place-location">
+                            <ion-icon name="location-outline" class="location-icon"></ion-icon>
+                            {{ $place->location }}
                         </p>
                     </div>
 
-                    <!-- Bahasa -->
+                    <!-- Deskripsi Tempat -->
+                    <div class="place-description">
+                        <h4 class="h4">Description</h4>
+                        {{ $place->description }}
+                    </div>
+
+                    <!-- Fasilitas -->
+                    @if($place->facilities)
                     <div class="detail-section">
-                        <h4 class="h4">Languages</h4>
+                        <h4 class="h4">Facilities</h4>
                         <ul class="tags">
-                            @foreach ($guide->guideProfile->languages as $lang)
-                                <li class="tag">{{ $lang }}</li>
+                            @foreach (explode(',', $place->facilities) as $facility)
+                                <li class="tag">{{ trim($facility) }}</li>
                             @endforeach
                         </ul>
                     </div>
+                    @endif
 
-                    <!-- Skills -->
+                    <!-- Tips -->
+                    @if($place->tips)
                     <div class="detail-section">
-                        <h4 class="h4">Skills</h4>
-                        <ul class="tags">
-                            @foreach ($guide->guideProfile->skills as $skill)
-                                <li class="tag">{{ $skill }}</li>
-                            @endforeach
-                        </ul>
+                        <h4 class="h4">Travel Tips</h4>
+                        <p class="place-description">
+                            {{ $place->tips }}
+                        </p>
                     </div>
-
-                    <!-- Availability -->
-                    <div class="detail-section">
-                        <h4 class="h4">Availability</h4>
-                        <div class="availability-list">
-                            @forelse($guide->availabilities->where("status","available") as $avail)
-                                <span class="avail-date">{{ $avail->date->format('d M Y') }}</span>
-                            @empty
-                                <p>No available dates for this guide.</p>
-                            @endforelse
-                        </div>
-                    </div>
+                    @endif
 
                 </div>
             </section>
-
 
             <!-- CTA -->
             <section class="cta" id="contact">
@@ -312,7 +241,7 @@
                     <div class="cta-content">
                         <p class="section-subtitle">Need Help?</p>
                         <h2 class="h2 section-title">Confused about where to go in Banyuwangi?</h2>
-                        <p class="section-text">Don’t worry, we offer free consultations!</p>
+                        <p class="section-text">Don't worry, we offer free consultations!</p>
                     </div>
                     <a
                         href="https://wa.me/6287864310772?text=Hallo%2C%20saya%20ingin%20konsultasi%20perjalanan%20wisata">
