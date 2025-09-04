@@ -157,7 +157,7 @@
                             <i class="arrow-down"></i>
                         </button>
                         <div class="dropdown-content">
-                            <a href="#">My Profile</a>
+                            <a href="{{ route('customer.profile') }}">My Profile</a>
                             <a href="{{ route('customer.bookings') }}">Booking History</a>
                             <hr>
                             <form action="{{ route('logout') }}" method="POST">
