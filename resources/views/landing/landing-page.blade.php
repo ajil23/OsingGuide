@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OsingGuide | Make Your Trip Easier</title>
+    <title>OsingGuide - Make Your Trip Easier</title>
 
     <!--
     - favicon
@@ -379,10 +379,10 @@
                                 <div class="card-price">
 
                                     <div class="wrapper">
-                                        <p class="reviews">({{ $guide->reviews_count }} reviews)</p>
+                                        <p class="reviews">({{ $guide->totalReviews }} reviews)</p>
 
                                         <div class="card-rating">
-                                            <span class="rating-text">{{ number_format($guide->guideProfile->rating ?? 0, 1) }}/5</span>
+                                            <span class="rating-text">{{ number_format($guide->avgRating, 1) }}/5</span>
                                             <ion-icon name="star"></ion-icon>
                                         </div>
                                     </div>
