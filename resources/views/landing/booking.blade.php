@@ -18,9 +18,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/landing-page.css') }}">
     <link id="pagestyle" href="{{ asset('assets/css/argon-dashboard.css')}}" rel="stylesheet" />
 
-    <!-- Flatpickr CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_green.css">
 
     <!--
     - google font link
@@ -115,61 +112,6 @@
             font-weight: 500;
         }
 
-        /* Date Range Picker Styles */
-        #date-range {
-            cursor: pointer;
-            background: #fff;
-        }
-
-        #date-range:focus {
-            border-color: hsl(172, 51%, 15%);
-            box-shadow: 0 0 0 0.2rem rgba(172, 51%, 15%, 0.25);
-        }
-
-        .flatpickr-calendar {
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .flatpickr-day.selected {
-            background: hsl(172, 51%, 15%) !important;
-            border-color: hsl(172, 51%, 15%) !important;
-        }
-
-        .flatpickr-day.selected.startRange {
-            background: hsl(172, 51%, 15%) !important;
-            border-color: hsl(172, 51%, 15%) !important;
-        }
-
-        .flatpickr-day.selected.endRange {
-            background: hsl(172, 51%, 15%) !important;
-            border-color: hsl(172, 51%, 15%) !important;
-        }
-
-        .flatpickr-day.inRange {
-            background: hsla(172, 51%, 15%, 0.1) !important;
-            border-color: hsla(172, 51%, 15%, 0.2) !important;
-        }
-
-        .flatpickr-current-month {
-            color: hsl(172, 51%, 15%) !important;
-        }
-
-        .flatpickr-monthDropdown-months {
-            color: hsl(172, 51%, 15%) !important;
-        }
-
-        .flatpickr-weekday {
-            color: hsl(172, 51%, 15%) !important;
-        }
-
-        .flatpickr-day:hover {
-            background: hsla(172, 51%, 15%, 0.1) !important;
-        }
-
-        .flatpickr-time input:hover,
-        .flatpickr-time input:focus {
-            background: hsla(172, 51%, 15%, 0.1) !important;
-        }
     </style>
 </head>
 
@@ -186,7 +128,7 @@
         <div class="header-top">
             <div class="container">
 
-                <a href="tel:+6287864310772" class="helpline-box">
+                <a href="tel:+6287731284246" class="helpline-box">
 
                     <div class="icon-box">
                         <ion-icon name="call-outline"></ion-icon>
@@ -195,7 +137,7 @@
                     <div class="wrapper">
                         <p class="helpline-title">For Further Inquires :</p>
 
-                        <p class="helpline-number">+6287864310772</p>
+                        <p class="helpline-number">+6287731284246</p>
                     </div>
 
                 </a>
@@ -335,11 +277,19 @@
                             <input type="hidden" name="guide_id" value="{{ $guide->id }}">
 
                             <div class="row">
-                                <div class="form-group col-md-12">
-                                    <label>Date and Time Trip</label>
-                                    <input type="text" id="date-range" placeholder="Select date and time range" readonly class="form-control @error('start_time') is-invalid @enderror" required>
-                                    <input type="hidden" name="start_time" id="start-time">
-                                    <input type="hidden" name="end_time" id="end-time">
+                                <div class="form-group col-md-6">
+                                    <label>Start Date and Time</label>
+                                    <input type="datetime-local" name="start_time" id="start-time" class="form-control @error('start_time') is-invalid @enderror" required>
+                                    @error('start_time')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>End Date and Time</label>
+                                    <input type="datetime-local" name="end_time" id="end-time" class="form-control @error('end_time') is-invalid @enderror" required>
+                                    @error('end_time')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-group mb-3">
@@ -465,8 +415,6 @@
   -->
     <script src="{{ asset('assets/js/landing-page.js') }}"></script>
 
-    <!-- Flatpickr JS -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <!--
     - ionicon link
@@ -638,32 +586,30 @@
 
         // Add event listeners to form inputs
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Flatpickr Date Range Picker
-            const dateRangeInput = document.getElementById("date-range");
             const startTimeInput = document.getElementById("start-time");
             const endTimeInput = document.getElementById("end-time");
 
-            const dateRangePicker = flatpickr(dateRangeInput, {
-                mode: "range",
-                dateFormat: "Y-m-d H:i",
-                enableTime: true,
-                time_24hr: true,
-                minDate: "today",
-                minTime: "00:00",
-                maxTime: "23:59",
-                onChange: function(selectedDates, dateStr, instance) {
-                    if (selectedDates.length === 2) {
-                        startTimeInput.value = selectedDates[0].toISOString().slice(0, 16);
-                        endTimeInput.value = selectedDates[1].toISOString().slice(0, 16);
-                        validateDates();
-                        calculatePrice();
-                    }
-                },
-                onClear: function() {
-                    startTimeInput.value = "";
-                    endTimeInput.value = "";
-                    calculatePrice();
+            // Set minimum date to today
+            const today = new Date();
+            const todayString = today.toISOString().slice(0, 16);
+            startTimeInput.min = todayString;
+            endTimeInput.min = todayString;
+
+            // Add event listeners for date inputs
+            startTimeInput.addEventListener('change', function() {
+                // Update end date minimum to be after start date
+                if (this.value) {
+                    const startDate = new Date(this.value);
+                    startDate.setMinutes(startDate.getMinutes() + 1); // At least 1 minute after
+                    endTimeInput.min = startDate.toISOString().slice(0, 16);
                 }
+                validateDates();
+                calculatePrice();
+            });
+
+            endTimeInput.addEventListener('change', function() {
+                validateDates();
+                calculatePrice();
             });
 
             const form = document.querySelector('form');

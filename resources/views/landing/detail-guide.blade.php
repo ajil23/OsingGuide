@@ -519,7 +519,7 @@
                         <p class="section-text">Don’t worry, we offer free consultations!</p>
                     </div>
                     <a
-                        href="https://wa.me/6287864310772?text=Hallo%2C%20saya%20ingin%20konsultasi%20perjalanan%20wisata">
+                        href="https://wa.me/6287731284246?text=Hallo%2C%20saya%20ingin%20konsultasi%20perjalanan%20wisata">
                         <button class="btn btn-secondary">Get Free Consultation Now!</button>
                     </a>
                 </div>
@@ -558,7 +558,7 @@
                         <li class="contact-item">
                             <ion-icon name="call-outline"></ion-icon>
 
-                            <a href="tel:+6287864310772" class="contact-link">+6287864310772</a>
+                            <a href="tel:+6287731284246" class="contact-link">+6287731284246</a>
                         </li>
 
                         <li class="contact-item">
